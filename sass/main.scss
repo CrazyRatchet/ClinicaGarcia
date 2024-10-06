@@ -1,0 +1,17 @@
+
+@import "../node_modules//bootstrap/scss/_functions";
+@import "../node_modules/bootstrap/scss/_variables";
+
+$custom-theme-colors: (
+    "primario": #24800b,
+    "secundario":#29bb00,
+    "gris": #e6e6e6,
+    "on": #1a7402
+
+);
+
+$theme-colors: map-merge($custom-theme-colors, $theme-colors);
+
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+
