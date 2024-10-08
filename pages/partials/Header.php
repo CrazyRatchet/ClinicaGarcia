@@ -30,38 +30,19 @@
                 <a class="nav-link active text-on" aria-current="page" href="index.php">Inicio</a>
               </li>
 
-              <!--Gestión de Personal-->
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-on" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Gestión de Personal
-                </a>
-
-                <!--Registrar Personal-->
-                <ul class="dropdown-menu bg-light">
-                  <li><a class="dropdown-item text-on" href="#">Registrar Personal</a></li>
-
-                  <li>
-                    <hr class="dropdown-divider">
-                  </li>
-
-                  <!--Asignar permisos-->
-                  <li><a class="dropdown-item text-on" href="#">Asignar permisos</a></li>
-
-                  <li>
-                    <hr class="dropdown-divider">
-                  </li>
-
-                  <!--Gestionar datos del personal-->
-                  <li><a class="dropdown-item text-on" href="#">Gestionar datos del personal</a></li>
-
-                </ul>
-              </li>
-
-              <!--Gesrtionar horarios y turnos-->
               <li class="nav-item">
-                <a class="nav-link active text-on" aria-current="page" href="#">Gestionar horarios y turnos</a>
+                <a class="nav-link active text-on" aria-current="page" href="admin/iniciarSesionAdmin.php">Administrador</a>
               </li>
 
+              <li class="nav-item">
+                <a class="nav-link active text-on" aria-current="page" href="medico/iniciarSesionMedico.php">Médico</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link active text-on" aria-current="page" href="recepcionista/iniciarSesionRecepcionista.php">Recepcionista</a>
+              </li>
+
+              
             </ul>
           </div>
         </div>
