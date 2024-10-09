@@ -7,19 +7,41 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gestión de Clínica García - Menú Princiapl - Médico</title>
+    <title>Sistema de Gestión de Clínica García - Menú Principal - Médico</title>
 
-    <!-- CSS-->
-    <link href="../cssAdmin/menu_principalAdmin.css" rel="stylesheet" type="text/css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <link rel="stylesheet" href="../../css/main.min.css">
+    <link rel="stylesheet" href="../../libs/bootstrap-icons/font/bootstrap-icons.css">
+    <script src="../../libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primario">
+        <div class="container-fluid">
+        <a class="navbar-brand text-light" href="../../index.php">
+          <!--Logo-->
+          <img src="../../assets/logo.png" alt="Clínica García" width="60" height="60">
+          <!--Nombre-->
+          Clínica García</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../controllers/Medico/logoutMedico.php">
+                            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <!-- Contenedor para las alertas -->
-    <div class="alert-container">
+    <div class="container mt-3">
         <?php
         if (isset($_SESSION['mensaje'])) {
             echo '<div class="alert alert-' . $_SESSION['mensaje']['tipo'] . ' alert-dismissible fade show" role="alert">';
@@ -31,32 +53,39 @@ session_start();
         ?>
     </div>
 
-    <div class="container text-center mt-5">
+    <!-- Contenido principal -->
+    <div class="container flex-grow-1 mt-5">
+        <h1 class="text-center mb-4">Bienvenido al Sistema de Gestión de Clínica García</h1>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
 
-        <a href="../../controllers/Medico/logoutMedico.php" class="logout-btn" title="Cerrar sesión">
-            <i class="fa fa-sign-out" aria-hidden="true"></i>
-        </a>
-
-        <h1 class="mb-4">Bienvenido al Sistema de Gestión de Clínica García</h1>
-        <div class="d-grid gap-3" style="max-width: 400px; margin: auto;">
-
-            <div class="mb-3">
-                <a href="" class="btn btn-primary btn-lg w-100">Ver historial médico del paciente</a>
+            <div class="col">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Ver historial médico del paciente</h5>
+                        <p class="card-text">Consulta el historial médico completo de tus pacientes.</p>
+                        <a href="#" class="btn btn-secundario w-100">Ver historial médico</a>
+                    </div>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <a href="" class="btn btn-secondary btn-lg w-100">Ver lista de citas</a>
+            <div class="col">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Ver lista de citas</h5>
+                        <p class="card-text">Accede a la lista de citas programadas para tus pacientes.</p>
+                        <a href="#" class="btn btn-secundario w-100">Ver lista de citas</a>
+                    </div>
+                </div>
             </div>
 
         </div>
     </div>
 
-    <footer>
+    <!-- Footer -->
+    <footer class="bg-primario text-white text-center py-3 mt-auto">
         <p>&copy; 2024 Clínica García. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- JavaScript-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>

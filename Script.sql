@@ -16,19 +16,19 @@ CREATE TABLE administrador (
 CREATE TABLE medicos_credenciales (
     cedula VARCHAR(20) PRIMARY KEY,  
     usuario VARCHAR(20) UNIQUE NOT NULL,
-    contrasena VARCHAR(255) NOT NULL -- Contraseña encriptada
+    contrasena VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE medicos_informacion (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- ID único para cada registro
-    cedula VARCHAR(20) NOT NULL, -- Cedula del médico, referenciada desde la tabla medicos_credenciales
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    cedula VARCHAR(20) NOT NULL, 
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
-    especialidad VARCHAR(100) NOT NULL, -- Especialidad del médico
+    especialidad VARCHAR(100) NOT NULL,
     telefono VARCHAR(20) NOT NULL,
     correo VARCHAR(50) NOT NULL,
     direccion VARCHAR(100) NOT NULL,
-    FOREIGN KEY (cedula) REFERENCES medicos_credenciales(cedula) -- Relación con la tabla de credenciales
+    FOREIGN KEY (cedula) REFERENCES medicos_credenciales(cedula) 
 ) ;
 
 ALTER TABLE medicos_informacion
@@ -57,19 +57,19 @@ INSERT INTO especialidades (nombre) VALUES
 CREATE TABLE recepcionistas_credenciales (
     cedula VARCHAR(20) PRIMARY KEY,  
     usuario VARCHAR(20) UNIQUE NOT NULL,
-    contrasena VARCHAR(255) NOT NULL -- Contraseña encriptada
+    contrasena VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 CREATE TABLE recepcionistas_informacion (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- ID único para cada registro
+    id INT AUTO_INCREMENT PRIMARY KEY,
     cedula VARCHAR(20) NOT NULL UNIQUE, 
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
     telefono VARCHAR(20) NOT NULL,
     correo VARCHAR(50) NOT NULL,
     direccion VARCHAR(100) NOT NULL,
-    FOREIGN KEY (cedula) REFERENCES recepcionistas_credenciales(cedula) -- Relación con la tabla de credenciales
+    FOREIGN KEY (cedula) REFERENCES recepcionistas_credenciales(cedula)
 ) ;
 
 

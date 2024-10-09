@@ -1,3 +1,6 @@
+<?php
+session_start(); // Siempre debe ir al principio del archivo
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -9,14 +12,33 @@
     <link rel="stylesheet" href="../../css/main.min.css">
     <link rel="stylesheet" href="../../libs/bootstrap-icons/font/bootstrap-icons.css">
     <script src="../../libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-<body>
-    <div class="container-fluid bg-light p-5">
-        <h1 class="text-center mb-4">Registrar Usuario Administrador</h1>
-        <div class="row justify-content-center">
-            <form class="col-md-6" action="../../controllers/Admin/procesar_registroAdmin.php" method="post">
+<body class="d-flex flex-column min-vh-100">
+    <!-- Header con bienvenida -->
+    <header class="bg-primario text-white text-center py-4">
+        <div class="container">
+            <h1>Registro de Administrador</h1>
+            <p>Completa el siguiente formulario para registrar un nuevo administrador</p>
+        </div>
+    </header>
+
+    <!-- Contenedor del formulario -->
+    <div class="container flex-grow-1 d-flex align-items-center justify-content-center">
+        <div class="w-100" style="max-width: 500px;">
+            <!-- Mostrar alertas -->
+            <?php
+            if (isset($_SESSION['mensaje'])) {
+                echo '<div class="alert alert-' . $_SESSION['mensaje']['tipo'] . ' alert-dismissible fade show mt-4" role="alert">';
+                echo $_SESSION['mensaje']['texto'];
+                echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                echo '</div>';
+                unset($_SESSION['mensaje']); // Limpiamos el mensaje después de mostrarlo
+            }
+            ?>
+
+            <br>
+            <form action="../../controllers/Admin/procesar_registroAdmin.php" method="post">
 
                 <div class="mb-3">
                     <label for="cedula" class="form-label">Cédula:</label>
@@ -60,21 +82,23 @@
                 </div>
 
                 <div class="text-center">
-                    <input type="submit" value="Registrarse" class="btn btn-primary w-50" id="submitBtn">
+                    <button type="submit" class="btn btn-primario w-100" id="submitBtn">Registrarse</button>
                 </div>
 
             </form>
         </div>
     </div>
+    <br>
 
-    <footer class="text-white text-center p-3 mt-5">
+    <!-- Footer -->
+    <footer class="bg-primario text-white text-center py-3 mt-auto">
         <p>&copy; 2024 Clínica García. Todos los derechos reservados.</p>
     </footer>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Validar solo letras y espacios en nombre y apellido
-            $('#nombre, #apellido').on('keypress', function (e) {
+            $('#nombre, #apellido').on('keypress', function(e) {
                 var charCode = e.which ? e.which : e.keyCode;
                 if (!(charCode >= 65 && charCode <= 90) && !(charCode >= 97 && charCode <= 122) && charCode !== 32) {
                     e.preventDefault();
@@ -82,7 +106,7 @@
             });
 
             // Validar solo números y letras en el campo de teléfono
-            $('#telefono').on('keypress', function (e) {
+            $('#telefono').on('keypress', function(e) {
                 var charCode = e.which ? e.which : e.keyCode;
                 if (!(charCode >= 48 && charCode <= 57) && !(charCode >= 65 && charCode <= 90) && !(charCode >= 97 && charCode <= 122)) {
                     e.preventDefault();
@@ -100,7 +124,7 @@
                             cedula: cedula
                         },
                         dataType: 'json',
-                        success: function (response) {
+                        success: function(response) {
                             if (response.existe) {
                                 $('#cedula').removeClass('is-valid').addClass('is-invalid');
                                 $('#cedulaFeedback').text('Un usuario administrador se encuentra registrado con la cédula ingresada. Por favor, registre uno que no esté registrado.');
@@ -111,7 +135,7 @@
                                 $('#submitBtn').prop('disabled', false);
                             }
                         },
-                        error: function () {
+                        error: function() {
                             $('#cedula').removeClass('is-valid').addClass('is-invalid');
                             $('#cedulaFeedback').text('Error al verificar la cédula.');
                             $('#submitBtn').prop('disabled', true);
@@ -124,7 +148,7 @@
                 }
             }
 
-            $('#cedula').on('blur', function () {
+            $('#cedula').on('blur', function() {
                 if ($(this).val().trim() !== '') {
                     validarCedula();
                 } else {
@@ -134,7 +158,7 @@
                 }
             });
 
-            $('#cedula').on('input', function () {
+            $('#cedula').on('input', function() {
                 $(this).removeClass('is-valid is-invalid');
                 $('#cedulaFeedback').text('');
                 $('#submitBtn').prop('disabled', false);
@@ -145,8 +169,8 @@
                     e.preventDefault();
                 }
             });
-            
-            $('form').on('submit', function (e) {
+
+            $('form').on('submit', function(e) {
                 e.preventDefault();
                 validarCedula();
                 if (!$('#cedula').hasClass('is-invalid')) {

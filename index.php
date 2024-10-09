@@ -8,23 +8,15 @@
   <link rel="stylesheet" href="libs/bootstrap-icons/font/bootstrap-icons.css">
   <script src="libs/bootstrap/js/bootstrap.bundle.min.js"></script>
   <title>Clinica García</title>
-  <style>
-    section {
-      padding: 100px 0;
-    }
-
-    body {
-      background-color: #F1F5FF;
-    }
-  </style>
 </head>
 
-<body>
- 
-<?php require "pages/partials/Header.php" ?>
+<body class="d-flex flex-column min-vh-100">
+  
+<?php require "pages/partials/Header.php"; ?>
+<br><br><br><br><br><br><br>
   
   <!--Sección de inicio-->
-  <section class="intro">
+  <section class="intro flex-grow-1">
     <div class="container-lg">
       <div class="row justify-content-center">
         <div class="col-md-5 text-center text-md-start">
@@ -36,11 +28,15 @@
 
         <div class="col-md-5 text-center d-none d-md-block">
           <img class="img-fluid" src="assets/image.png" alt="php">
-
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Footer -->
+  <footer class="bg-primario text-white text-center py-3">
+    <p>&copy; 2024 Clínica García. Todos los derechos reservados.</p>
+  </footer>
 
 </body>
 
