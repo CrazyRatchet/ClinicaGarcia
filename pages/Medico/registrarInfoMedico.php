@@ -9,9 +9,11 @@
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="../cssAdmin/registrarAdmin.css" rel="stylesheet" type="text/css">
+
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
 
 <body>
     <div class="container-fluid bg-light p-5">
@@ -23,14 +25,11 @@
                     <label for="cedula" class="form-label">Cédula:</label>
                     <input type="text" class="form-control" id="cedula" name="cedula" required>
                     <div id="cedulaFeedback" class="invalid-feedback"></div>
-
                 </div>
-
 
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre:</label>
                     <input type="text" class="form-control" id="nombre" name="nombre" required>
-
                 </div>
 
                 <div class="mb-3">
@@ -43,22 +42,19 @@
                     <select class="form-select" id="especialidad" name="especialidad" required>
                         <option value="">Seleccione una especialidad</option>
                         <?php
-                        require_once '../../db/Database.php'; // Incluir la conexión a la base de datos
+                        require_once '../../db/Database.php';
 
                         $database = new Database();
                         $pdo = $database->getConnection();
 
-                        // Consulta para obtener todas las marcas
                         $stmt = $pdo->query("SELECT * FROM especialidades");
 
-                        // Generar las opciones del combobox de marcas
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             echo "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['nombre']) . "</option>";
                         }
                         ?>
                     </select>
                 </div>
-
 
                 <div class="mb-3">
                     <label for="telefono" class="form-label">Teléfono:</label>
@@ -75,8 +71,6 @@
                     <input type="text" class="form-control" id="direccion" name="direccion" required>
                 </div>
 
-
-
                 <div class="text-center">
                     <input type="submit" value="Registrarse" class="btn btn-primary w-50" id="submitBtn">
                 </div>
@@ -87,7 +81,6 @@
 
     <footer class="text-white text-center p-3 mt-5">
         <p>&copy; 2024 Clínica García. Todos los derechos reservados.</p>
-
     </footer>
 
     <script>
@@ -125,12 +118,32 @@
                 }
             }
 
-            
-            // Función para actualizar el estado del botón de envío
             function actualizarEstadoBoton() {
-                var hayErrores = $('cedula').hasClass('is-invalid');
+                var hayErrores = $('#cedula').hasClass('is-invalid');
                 $('#submitBtn').prop('disabled', hayErrores);
             }
+
+            // Validar solo letras para nombre y apellido
+            $('#nombre, #apellido').on('keypress', function(e) {
+                var keyCode = e.which || e.keyCode;
+                if (!/^[a-zA-Z\s]+$/.test(String.fromCharCode(keyCode)) && keyCode !== 8) {
+                    e.preventDefault();
+                }
+            });
+            $('#cedula').on('keypress', function(e) {
+                var keyCode = e.which || e.keyCode;
+                if (!/[0-9-]/.test(String.fromCharCode(keyCode)) && keyCode !== 8) {
+                    e.preventDefault();
+                }
+            });
+
+            // Validar solo números para teléfono
+            $('#telefono').on('keypress', function(e) {
+                var keyCode = e.which || e.keyCode;
+                if (!/^\d+$/.test(String.fromCharCode(keyCode)) && keyCode !== 8) {
+                    e.preventDefault();
+                }
+            });
 
             // Manejo de eventos para el campo cédula
             $('#cedula').on('blur', validarCedula);
@@ -140,13 +153,10 @@
                 actualizarEstadoBoton();
             });
 
-            
             // Inicialización
             actualizarEstadoBoton();
-
         });
     </script>
-
 
 </body>
 

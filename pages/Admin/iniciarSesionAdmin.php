@@ -42,7 +42,12 @@ session_start(); // Siempre debe ir al principio del archivo
             
             <div class="mb-3">
                 <label for="contrasena" class="form-label">Contraseña:</label>
-                <input type="password" class="form-control" name="contrasena" id="contrasena" required>
+                <div class="input-group">
+                    <input type="password" class="form-control" name="contrasena" id="contrasena" required>
+                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
             </div>
             
             <button type="submit" class="btn btn-custom btn-success">Ingresar</button>
@@ -57,6 +62,19 @@ session_start(); // Siempre debe ir al principio del archivo
         </div>
     </footer>
 
-   
+    <script>
+        // Mostrar u ocultar contraseña
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            var passwordField = document.getElementById('contrasena');
+            var passwordFieldType = passwordField.getAttribute('type');
+            if (passwordFieldType === 'password') {
+                passwordField.setAttribute('type', 'text');
+                this.innerHTML = '<i class="bi bi-eye-slash"></i>';
+            } else {
+                passwordField.setAttribute('type', 'password');
+                this.innerHTML = '<i class="bi bi-eye"></i>';
+            }
+        });
+    </script>
 </body>
 </html>
