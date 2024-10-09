@@ -12,6 +12,7 @@ session_start(); // Siempre debe ir al principio del archivo
     <link rel="stylesheet" href="../../css/main.min.css">
     <link rel="stylesheet" href="../../libs/bootstrap-icons/font/bootstrap-icons.css">
     <script src="../../libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
