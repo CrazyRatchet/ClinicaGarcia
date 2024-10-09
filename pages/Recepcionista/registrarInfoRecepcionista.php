@@ -12,6 +12,7 @@
 
     <!-- Enlace a la biblioteca de Bootstrap para funcionalidades de JavaScript -->
     <script src="../../libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
