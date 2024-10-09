@@ -1,7 +1,7 @@
 <?php
 session_start();
-include '../config/Database.php';
-include '../includes/RecepcionistasCredenciales.php';
+include '../../db/Database.php';
+include '../../db/RecepcionistasCredenciales.php';
 
 if (!isset($_POST['usuario'], $_POST['contrasena'])) {
     $_SESSION['mensaje'] = [
@@ -38,7 +38,7 @@ try {
                 'texto' => 'Inicio de sesión exitoso. Bienvenido!'
             ];
             
-            header("Location: menu_principalRecepcionista.php");
+            header("Location: ../../pages/Recepcionista/menu_principalRecepcionista.php");
             exit();
         } else {
             $_SESSION['mensaje'] = [

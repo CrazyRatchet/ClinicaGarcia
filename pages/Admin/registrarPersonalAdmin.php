@@ -21,7 +21,7 @@ session_start(); // Siempre debe ir al principio del archivo
 
     <div class="container text-center mt-5">
 
-        <a href="logoutAdmin.php" class="logout-btn" title="Cerrar sesión">
+        <a href="../../controllers/Admin/logoutAdmin.php" class="logout-btn" title="Cerrar sesión">
             <i class="fa fa-sign-out" aria-hidden="true"></i>
         </a>
 
@@ -29,11 +29,11 @@ session_start(); // Siempre debe ir al principio del archivo
         <div class="d-grid gap-3" style="max-width: 400px; margin: auto;">
 
             <div class="mb-3">
-                <a href="../medico/registrarUsuarioMedico.php" class="btn btn-primary btn-lg w-100">Registrar usuario médico</a>
+                <a href="../Medico/registrarUsuarioMedico.php" class="btn btn-primary btn-lg w-100">Registrar usuario médico</a>
             </div>
 
             <div class="mb-3">
-                <a href="../recepcionista/registrarUsuarioRecepcionista.php" class="btn btn-secondary btn-lg w-100">Registrar usuario recepcionista</a>
+                <a href="../Recepcionista/registrarUsuarioRecepcionista.php" class="btn btn-secondary btn-lg w-100">Registrar usuario recepcionista</a>
             </div>
 
         </div>

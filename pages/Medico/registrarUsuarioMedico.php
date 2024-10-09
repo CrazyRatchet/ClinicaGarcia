@@ -21,7 +21,7 @@
         <div class="container-fluid bg-light">
             <h1 class="text-center mb-4">Registrar Usuario Médico</h1>
             <div class="row justify-content-center">
-                <form class="col-md-6" action="procesar_registroUsuarioMedico.php" method="post">
+                <form class="col-md-6" action="../../controllers/Medico/procesar_registroUsuarioMedico.php" method="post">
                     <div class="mb-3">
                         <label for="cedula" class="form-label">Cédula:</label>
                         <input type="text" class="form-control" id="cedula" name="cedula" required>
@@ -57,7 +57,7 @@
                 if (cedula) {
                     $.ajax({
                         type: 'POST',
-                        url: '../ajax/validar_cedulaMedico.php',
+                        url: '../../ajax/validar_cedulaMedico.php',
                         data: {
                             cedula: cedula
                         },

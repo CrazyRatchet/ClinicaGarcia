@@ -17,7 +17,7 @@ session_start(); // Siempre debe ir al principio del archivo
     <header class="hero text-center">
         <div class="container">
             <h1>Bienvenido al Sistema de Administración de Clínica García</h1>
-            <p>Sesión Médica</p>
+            <p>Sesión Recepcionista</p>
         </div>
     </header>
 
@@ -34,7 +34,7 @@ session_start(); // Siempre debe ir al principio del archivo
         ?>
 
         <h2 class="text-center">Iniciar Sesión</h2>
-        <form method="POST" action="autenticarMedico.php">
+        <form method="POST" action="../../controllers/Recepcionista/autenticarRecepcionista.php">
             <div class="mb-3">
                 <label for="usuario" class="form-label">Usuario:</label>
                 <input type="text" class="form-control" name="usuario" id="usuario" required>

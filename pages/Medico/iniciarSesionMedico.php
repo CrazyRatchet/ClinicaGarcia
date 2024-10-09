@@ -10,14 +10,14 @@ session_start(); // Siempre debe ir al principio del archivo
     
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="../cssAdmin/inicioSesion.css" rel="stylesheet" type="text/css">
+    <link href="../cssMedico/inicioSesionMedico.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
     <header class="hero text-center">
         <div class="container">
             <h1>Bienvenido al Sistema de Administración de Clínica García</h1>
-            <p>Administre su clínica de manera eficiente y rápida</p>
+            <p>Sesión Médica</p>
         </div>
     </header>
 
@@ -34,7 +34,7 @@ session_start(); // Siempre debe ir al principio del archivo
         ?>
 
         <h2 class="text-center">Iniciar Sesión</h2>
-        <form method="POST" action="autenticarAdmin.php">
+        <form method="POST" action="../../controllers/Medico/autenticarMedico.php">
             <div class="mb-3">
                 <label for="usuario" class="form-label">Usuario:</label>
                 <input type="text" class="form-control" name="usuario" id="usuario" required>
@@ -46,7 +46,7 @@ session_start(); // Siempre debe ir al principio del archivo
             </div>
             
             <button type="submit" class="btn btn-custom btn-success">Ingresar</button>
-            <p class="text-center mt-3"><a href="registrarAdmin.php">¿No tienes cuenta? Regístrate aquí</a></p>
+            
         </form>
     </div>
 

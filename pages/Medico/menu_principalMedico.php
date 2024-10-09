@@ -1,5 +1,5 @@
 <?php
-session_start(); // Siempre debe ir al principio del archivo
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -7,7 +7,7 @@ session_start(); // Siempre debe ir al principio del archivo
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gestión de Clínica García - Menú Princiapl - Administrador</title>
+    <title>Sistema de Gestión de Clínica García - Menú Princiapl - Médico</title>
 
     <!-- CSS-->
     <link href="../cssAdmin/menu_principalAdmin.css" rel="stylesheet" type="text/css">
@@ -26,14 +26,14 @@ session_start(); // Siempre debe ir al principio del archivo
             echo $_SESSION['mensaje']['texto'];
             echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
             echo '</div>';
-            unset($_SESSION['mensaje']); // Limpiamos el mensaje después de mostrarlo
+            unset($_SESSION['mensaje']);
         }
         ?>
     </div>
 
     <div class="container text-center mt-5">
 
-        <a href="logoutAdmin.php" class="logout-btn" title="Cerrar sesión">
+        <a href="../../controllers/Medico/logoutMedico.php" class="logout-btn" title="Cerrar sesión">
             <i class="fa fa-sign-out" aria-hidden="true"></i>
         </a>
 
@@ -41,11 +41,11 @@ session_start(); // Siempre debe ir al principio del archivo
         <div class="d-grid gap-3" style="max-width: 400px; margin: auto;">
 
             <div class="mb-3">
-                <a href="registrarPersonalAdmin.php" class="btn btn-primary btn-lg w-100">Registrar personal</a>
+                <a href="" class="btn btn-primary btn-lg w-100">Ver historial médico del paciente</a>
             </div>
 
             <div class="mb-3">
-                <a href="registrarInfoPersonalAdmin.php" class="btn btn-secondary btn-lg w-100">Registrar información personal</a>
+                <a href="" class="btn btn-secondary btn-lg w-100">Ver lista de citas</a>
             </div>
 
         </div>

@@ -17,7 +17,7 @@
     <div class="container-fluid bg-light p-5">
         <h1 class="text-center mb-4">Registrar Información de Usuario Recepcionista</h1>
         <div class="row justify-content-center">
-            <form class="col-md-6" action="procesar_registroInfoRecepcionista.php" method="post">
+            <form class="col-md-6" action="../../controllers/Recepcionista/procesar_registroInfoRecepcionista.php" method="post">
 
                 <div class="mb-3">
                     <label for="cedula" class="form-label">Cédula:</label>
@@ -75,7 +75,7 @@
                 if (cedula) {
                     $.ajax({
                         type: 'POST',
-                        url: '../ajax/validar_cedulaRecepcionista.php',
+                        url: '../../ajax/validar_cedulaRecepcionista.php',
                         data: {
                             cedula: cedula
                         },

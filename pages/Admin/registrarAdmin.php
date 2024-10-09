@@ -6,18 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Administrador</title>
 
-    <!-- CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="../cssAdmin/registrarAdmin.css" rel="stylesheet" type="text/css">
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../../css/main.min.css">
+    <link rel="stylesheet" href="../../libs/bootstrap-icons/font/bootstrap-icons.css">
+    <script src="../../libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <body>
     <div class="container-fluid bg-light p-5">
         <h1 class="text-center mb-4">Registrar Usuario Administrador</h1>
         <div class="row justify-content-center">
-            <form class="col-md-6" action="../admin/procesar_registroAdmin.php" method="post">
+            <!--../admin/procesar_registroAdmin.php-->
+            <form class="col-md-6" action="../../controllers/Admin/procesar_registroAdmin.php" method="post">
 
                 <div class="mb-3">
                     <label for="cedula" class="form-label">Cédula:</label>
@@ -86,7 +84,7 @@
                 if (cedula) {
                     $.ajax({
                         type: 'POST',
-                        url: '../ajax/validar_cedulaAdmin.php',
+                        url: '../../ajax/validar_cedulaAdmin.php',
                         data: {
                             cedula: cedula
                         },

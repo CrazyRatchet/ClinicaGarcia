@@ -1,6 +1,6 @@
 <?php
-include '../config/Database.php';
-include '../includes/Administrador.php';
+include '../../db/Database.php';
+include '../../db/Administrador.php';
 
 $database = new Database();
 $db = $database->getConnection();

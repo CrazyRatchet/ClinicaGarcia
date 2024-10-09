@@ -1,7 +1,7 @@
 <?php
 session_start();
-include '../config/Database.php';
-include '../includes/Administrador.php';
+include '../../db/Database.php';
+include '../../db/Administrador.php';
 
 if (!isset($_POST['usuario'], $_POST['contrasena'])) {
     $_SESSION['mensaje'] = [
@@ -38,7 +38,7 @@ try {
                 'texto' => 'Inicio de sesión exitoso. Bienvenido!'
             ];
             
-            header("Location: menu_principalAdmin.php");
+            header("Location: ../../pages/Admin/menu_principalAdmin.php");
             exit();
         } else {
             $_SESSION['mensaje'] = [

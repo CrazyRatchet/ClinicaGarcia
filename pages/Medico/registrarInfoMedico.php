@@ -17,7 +17,7 @@
     <div class="container-fluid bg-light p-5">
         <h1 class="text-center mb-4">Registrar Información de Usuario Médico</h1>
         <div class="row justify-content-center">
-            <form class="col-md-6" action="procesar_registroInfoMedico.php" method="post">
+            <form class="col-md-6" action="../../controllers/Medico/procesar_registroInfoMedico.php" method="post">
 
                 <div class="mb-3">
                     <label for="cedula" class="form-label">Cédula:</label>
@@ -43,7 +43,7 @@
                     <select class="form-select" id="especialidad" name="especialidad" required>
                         <option value="">Seleccione una especialidad</option>
                         <?php
-                        require_once '../config/Database.php'; // Incluir la conexión a la base de datos
+                        require_once '../../db/Database.php'; // Incluir la conexión a la base de datos
 
                         $database = new Database();
                         $pdo = $database->getConnection();
@@ -97,7 +97,7 @@
                 if (cedula) {
                     $.ajax({
                         type: 'POST',
-                        url: '../ajax/validar_cedulaMedico.php',
+                        url: '../../ajax/validar_cedulaMedico.php',
                         data: {
                             cedula: cedula
                         },

@@ -2,8 +2,8 @@
 echo '<head>';
 echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">';
 echo '</head>';
-include '../config/Database.php';
-include '../includes/MedicosInfo.php';
+include '../../db/Database.php';
+include '../../db/MedicosInfo.php';
 
 $database = new Database();
 $db = $database->getConnection();
@@ -37,6 +37,6 @@ if ($medicosinfo->registrar()) {
 }
 
 $tiempo_espera = 5;
-$url_destino = 'registrarInfoMedico.php';
+$url_destino = '../../pages/Medico/registrarInfoMedico.php';
 echo "<meta http-equiv='refresh' content='$tiempo_espera;url=$url_destino'>";
 ?>

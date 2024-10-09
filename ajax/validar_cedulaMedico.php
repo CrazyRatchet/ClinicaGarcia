@@ -1,6 +1,6 @@
 <?php
-include '../config/Database.php';
-include '../includes/MedicosCredenciales.php';
+include '../db/Database.php';
+include '../db/MedicosCredenciales.php';
 
 $database = new Database();
 $db = $database->getConnection();

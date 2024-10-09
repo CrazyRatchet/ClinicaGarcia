@@ -31,15 +31,15 @@
               </li>
 
               <li class="nav-item">
-                <a class="nav-link active text-on" aria-current="page" href="admin/iniciarSesionAdmin.php">Administrador</a>
+                <a class="nav-link active text-on" aria-current="page" href="pages/Admin/iniciarSesionAdmin.php">Administrador</a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link active text-on" aria-current="page" href="medico/iniciarSesionMedico.php">Médico</a>
+                <a class="nav-link active text-on" aria-current="page" href="pages/Medico/iniciarSesionMedico.php">Médico</a>
               </li>
 
               <li class="nav-item">
-                <a class="nav-link active text-on" aria-current="page" href="recepcionista/iniciarSesionRecepcionista.php">Recepcionista</a>
+                <a class="nav-link active text-on" aria-current="page" href="pages/Recepcionista/iniciarSesionRecepcionista.php">Recepcionista</a>
               </li>
 
               

@@ -8,6 +8,6 @@ $_SESSION = array();
 session_destroy();
 
 // Redirigir a la página de inicio de sesión
-header('Location: iniciarSesionRecepcionista.php');
+header('Location: ../../pages/Recepcionista/iniciarSesionRecepcionista.php');
 exit();
 ?>

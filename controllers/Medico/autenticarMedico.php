@@ -1,7 +1,7 @@
 <?php
 session_start();
-include '../config/Database.php';
-include '../includes/MedicosCredenciales.php';
+include '../../db/Database.php';
+include '../../db/MedicosCredenciales.php';
 
 if (!isset($_POST['usuario'], $_POST['contrasena'])) {
     $_SESSION['mensaje'] = [
@@ -38,7 +38,7 @@ try {
                 'texto' => 'Inicio de sesión exitoso. Bienvenido!'
             ];
             
-            header("Location: menu_principalMedico.php");
+            header("Location: ../../pages/Medico/menu_principalMedico.php");
             exit();
         } else {
             $_SESSION['mensaje'] = [

@@ -2,8 +2,8 @@
 echo '<head>';
 echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">';
 echo '</head>';
-include '../config/Database.php';
-include '../includes/RecepcionistasInfo.php';
+include '../db/Database.php';
+include '../db/RecepcionistasInfo.php';
 
 $database = new Database();
 $db = $database->getConnection();
@@ -29,6 +29,6 @@ if ($recepcionistasinfo->registrar()) {
 }
 
 $tiempo_espera = 5;
-$url_destino = 'registrarInfoRecepcionista.php';
+$url_destino = '../../pages/Recepcionista/registrarInfoRecepcionista.php';
 echo "<meta http-equiv='refresh' content='$tiempo_espera;url=$url_destino'>";
 ?>

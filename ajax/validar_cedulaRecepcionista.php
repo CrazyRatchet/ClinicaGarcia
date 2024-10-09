@@ -1,6 +1,6 @@
 <?php
-include '../config/Database.php';
-include '../includes/RecepcionistasCredenciales.php';
+include '../db/Database.php';
+include '../db/RecepcionistasCredenciales.php';
 
 $database = new Database();
 $db = $database->getConnection();
