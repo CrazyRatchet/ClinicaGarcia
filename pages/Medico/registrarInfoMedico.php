@@ -19,7 +19,7 @@
     <!-- Header con bienvenida -->
     <header class="bg-primario text-white text-center py-4">
         <div class="container">
-            <h1>Registro de Médico</h1>
+            <h1>Registro de Información de Médico</h1>
             <p>Completa el siguiente formulario para registrar un nuevo médico</p>
         </div>
     </header>

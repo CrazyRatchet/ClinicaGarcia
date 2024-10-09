@@ -54,7 +54,7 @@ session_start();
 
     <!-- Contenido principal -->
     <div class="container flex-grow-1 mt-5">
-        <h1 class="text-center mb-4">Bienvenido al Sistema de Gestión de Clínica García</h1>
+        <h1 class="text-center mb-4">Registro de Personal</h1>
         <div class="row row-cols-1 row-cols-md-2 g-4">
 
             <div class="col">

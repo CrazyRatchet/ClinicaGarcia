@@ -8,7 +8,7 @@ if (!isset($_POST['usuario'], $_POST['contrasena'])) {
         'tipo' => 'danger',
         'texto' => 'Por favor, complete todos los campos'
     ];
-    header('Location: iniciarSesionMedico.php');
+    header('Location: ../../pages/Medico/iniciarSesionMedico.php');
     exit();
 }
 
@@ -45,7 +45,7 @@ try {
                 'tipo' => 'danger',
                 'texto' => 'Usuario o contraseña incorrectos. Por favor, intente nuevamente.'
             ];
-            header('Location: iniciarSesionMedico.php');
+            header('Location: ../../pages/Medico/iniciarSesionMedico.php');
             exit();
         }
     } else {
@@ -53,7 +53,7 @@ try {
             'tipo' => 'danger',
             'texto' => 'Usuario o contraseña incorrectos. Por favor, intente nuevamente.'
         ];
-        header('Location: iniciarSesionMedico.php');
+        header('Location: ../../pages/Medico/iniciarSesionMedico.php');
         exit();
     }
 } catch (Exception $e) {
@@ -61,7 +61,7 @@ try {
         'tipo' => 'danger',
         'texto' => 'Error en el sistema: ' . $e->getMessage()
     ];
-    header('Location: iniciarSesionMedico.php');
+    header('Location: ../../pages/Medico/iniciarSesionMedico.php');
     exit();
 }
 ?>

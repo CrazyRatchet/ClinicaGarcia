@@ -18,7 +18,7 @@
     <!-- Header con bienvenida -->
     <header class="bg-primario text-white text-center py-4">
         <div class="container">
-            <h1>Registrar Información de Usuario Recepcionista</h1>
+            <h1>Registrar Información de Recepcionista</h1>
             <p>Completa el siguiente formulario para registrar un nuevo recepcionista</p>
         </div>
     </header>

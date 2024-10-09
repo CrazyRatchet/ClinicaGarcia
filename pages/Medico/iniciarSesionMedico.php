@@ -17,8 +17,7 @@ session_start(); // Siempre debe ir al principio del archivo
     <!-- Header con bienvenida -->
     <header class="bg-primario text-white text-center py-4">
         <div class="container">
-            <h1>Bienvenido al Sistema de Administración de Clínica García</h1>
-            <p>Sesión Médica</p>
+            <h1>Inicio de Sesión</h1>
         </div>
     </header>
 
