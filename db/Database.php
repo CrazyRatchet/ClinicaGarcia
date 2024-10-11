@@ -1,7 +1,7 @@
 <?php
 class Database {
     private $host = "localhost";
-    private $db_name = "gestion_clinica";
+    private $db_name = "clinica_garcia";
     private $username = "root"; // Cambia a tu nombre de usuario de MySQL
     private $password = ""; // Cambia a tu contraseña de MySQL
     private $conn;
@@ -20,5 +20,4 @@ class Database {
         return $this->conn;
     }
 }
-?>
 

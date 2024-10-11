@@ -1,75 +1,59 @@
-CREATE DATABASE gestion_clinica;
 
-USE gestion_clinica;
-
-CREATE TABLE administrador (
-    cedula VARCHAR (20) PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL,
-    apellido VARCHAR(50) NOT NULL,
-    telefono VARCHAR(30) NOT NULL,
-    correo VARCHAR(40) NOT NULL,  
-    direccion VARCHAR(100) NOT NULL,
-    usuario VARCHAR (20) NOT NULL UNIQUE,
-    contrasena VARCHAR (255) NOT NULL
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE medicos_credenciales (
-    cedula VARCHAR(20) PRIMARY KEY,  
-    usuario VARCHAR(20) UNIQUE NOT NULL,
-    contrasena VARCHAR(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE medicos_informacion (
-    id INT AUTO_INCREMENT PRIMARY KEY, 
-    cedula VARCHAR(20) NOT NULL, 
-    nombre VARCHAR(50) NOT NULL,
-    apellido VARCHAR(50) NOT NULL,
-    especialidad VARCHAR(100) NOT NULL,
-    telefono VARCHAR(20) NOT NULL,
-    correo VARCHAR(50) NOT NULL,
-    direccion VARCHAR(100) NOT NULL,
-    FOREIGN KEY (cedula) REFERENCES medicos_credenciales(cedula) 
-) ;
-
-ALTER TABLE medicos_informacion
-ADD CONSTRAINT unique_cedula UNIQUE (cedula);
+CREATE DATABASE clinica_garcia;
+USE clinica_garcia;
 
 
-CREATE TABLE especialidades (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL
+CREATE TABLE roles (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL UNIQUE,
+    Descripcion TEXT,
+    Created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
-INSERT INTO especialidades (nombre) VALUES
-('Cardiología'),
-('Cirugía General'),
-('Dermatología'),
-('Ginecología y Obstetricia'),
-('Medicina Interna'),
-('Neurología'),
-('Oftalmología'),
-('Oncología'),
-('Odontología'),
-('Pediatría'),
-('Psiquiatría');
-
-CREATE TABLE recepcionistas_credenciales (
-    cedula VARCHAR(20) PRIMARY KEY,  
-    usuario VARCHAR(20) UNIQUE NOT NULL,
-    contrasena VARCHAR(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE permisos (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL UNIQUE,
+    Descripcion TEXT,
+    Created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 
-CREATE TABLE recepcionistas_informacion (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    cedula VARCHAR(20) NOT NULL UNIQUE, 
+CREATE TABLE rol_permisos (
+    Rol_id INT,
+    Permiso_id INT,
+    FOREIGN KEY (rol_id) REFERENCES roles(id) ON DELETE CASCADE,
+    FOREIGN KEY (permiso_id) REFERENCES permisos(id) ON DELETE CASCADE,
+    PRIMARY KEY (rol_id, permiso_id)
+);
+
+
+CREATE TABLE especialidades (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL UNIQUE,
+    Descripcion TEXT,
+    Created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE usuarios_login (
+    id_ul INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_usuario VARCHAR(50) NOT NULL UNIQUE,
+    contrasenia VARCHAR(255) NOT NULL,
+    Created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE usuarios (
+    id_u INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
-    telefono VARCHAR(20) NOT NULL,
-    correo VARCHAR(50) NOT NULL,
-    direccion VARCHAR(100) NOT NULL,
-    FOREIGN KEY (cedula) REFERENCES recepcionistas_credenciales(cedula)
-) ;
-
-
+    cedula VARCHAR(20) NOT NULL UNIQUE,
+    direccion TEXT,
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    telefono VARCHAR(15) NOT NULL UNIQUE,
+    rol VARCHAR(15) not null,
+    especialidad varchar(50),
+    Created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

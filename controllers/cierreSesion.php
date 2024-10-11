@@ -8,6 +8,5 @@ $_SESSION = array();
 session_destroy();
 
 // Redirigir a la página de inicio de sesión
-header('Location: ../../pages/Admin/iniciarSesionAdmin.php');
+header('Location: ../index.php');
 exit();
-?>
