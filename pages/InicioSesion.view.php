@@ -19,3 +19,6 @@
 
     <button type="submit" class="btn btn-primario w-100">Ingresar</button>
 </form>
+
+
+<?php require 'partials/footer.php' ?>

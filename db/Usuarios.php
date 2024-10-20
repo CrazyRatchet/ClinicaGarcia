@@ -1,103 +1,116 @@
 <?php
-
 class Usuarios
 {
     private $conn;
-    private $table_name = [
-        "usuarios",
-        "usuarios_login"
-    ];
-
-    public $datos = [
-        "nombre",
-        "apellido",
-        "cedula",
-        "direccion",
-        "correo",
-        "telefono",
-        "rol",
-        "especialidad",
-    ];
-
-    public $datos_login = [
-        "nombre_usuario",
-        "contrasenia"
-    ];
+    public $datos = [];
+    public $datos_login = [];
 
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
-    public function registrarUsuarios()
+    // Método para crear usuario
+    public function crearUsuario()
     {
-        $query = "Insert into " . $this->table_name[0] . "
-        (nombre, apellido, cedula, direccion, correo, telefono, rol, especialidad)
-        values
-        (:nombre, :apellido, :cedula, :direccion, :correo, :telefono, :rol, :especialidad)";
+        // Inicia la transacción
+        $this->conn->beginTransaction();
+        try {
+            // Inserción en la tabla usuario
+            $query = "INSERT INTO usuario (nombre, apellido, cedula, direccion, correo, telefono, rol_id)
+                      VALUES (:nombre, :apellido, :cedula, :direccion, :correo, :telefono, :rol_id)";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':nombre', $this->datos['nombre']);
+            $stmt->bindParam(':apellido', $this->datos['apellido']);
+            $stmt->bindParam(':cedula', $this->datos['cedula']);
+            $stmt->bindParam(':direccion', $this->datos['direccion']);
+            $stmt->bindParam(':correo', $this->datos['correo']);
+            $stmt->bindParam(':telefono', $this->datos['telefono']);
+            $stmt->bindParam(':rol_id', $this->datos['rol_id']);
+            $stmt->execute();
 
-        $stmt = $this->conn->prepare($query);
+            // Obtener el ID del usuario recién creado
+            $usuario_id = $this->conn->lastInsertId();
 
+            // Insertar en la tabla de usuario_login
+            $query_login = "INSERT INTO usuario_login (id_ul, nombre_usuario, contrasenia)
+                            VALUES (:usuario_id, :nombre_usuario, :contrasenia)";
+            $stmt_login = $this->conn->prepare($query_login);
+            $stmt_login->bindParam(':usuario_id', $usuario_id);
+            $stmt_login->bindParam(':nombre_usuario', $this->datos_login['nombre_usuario']);
+            $stmt_login->bindParam(':contrasenia', $this->datos_login['contrasenia']);
+            $stmt_login->execute();
 
-        foreach ($this->datos as $key => $value) {
-            $this->datos[$key] = htmlspecialchars(strip_tags($value));
-        }
-
-        $stmt->bindParam(":nombre", $this->datos['nombre']);
-        $stmt->bindParam(":apellido", $this->datos['apellido']);
-        $stmt->bindParam(":cedula", $this->datos['cedula']);
-        $stmt->bindParam(":direccion", $this->datos['direccion']);
-        $stmt->bindParam(":correo", $this->datos['correo']);
-        $stmt->bindParam(":telefono", $this->datos['telefono']);
-        $stmt->bindParam(":rol", $this->datos['rol']);
-        $stmt->bindParam(":especialidad", $this->datos['especialidad']);
-
-        $query2 = "Insert into " . $this->table_name[1] . "
-        (nombre_usuario, contrasenia)
-        values 
-        (:nombre_usuario, :contrasenia)";
-
-        $stmt2 = $this->conn->prepare($query2);
-
-        foreach ($this->datos_login as $key => $value) {
-            $this->datos[$key] = htmlspecialchars(strip_tags($value));
-        }
-
-
-        $stmt2->bindParam(":nombre_usuario", $this->datos_login['nombre_usuario']);
-        $stmt2->bindParam(":contrasenia", $this->datos_login['contrasenia']);
-
-        if ($stmt->execute() && $stmt2->execute()) {
+            // Commit de la transacción
+            $this->conn->commit();
             return true;
+        } catch (Exception $e) {
+            // Rollback en caso de error
+            $this->conn->rollBack();
+            return false;
         }
-        return false;
     }
 
-    public function busquedaUsuarios($table, $atribute, $value){
-        $query = "Select * From " . $table . " Where " . $atribute . " = :value";
+    // Método para agregar especialidad a la tabla intermedia
+    public function agregarEspecialidad($usuario_id, $especialidad_id)
+    {
+        $query = "INSERT INTO especialidad_usuario (id_usuario, id_especialidad) VALUES (:usuario_id, :especialidad_id)";
         $stmt = $this->conn->prepare($query);
-
-        $value = htmlspecialchars(strip_tags($value));
-        $stmt->bindParam(":value", $value);
-
-        if($stmt->execute()){
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        }
-        return false;
-
+        $stmt->bindParam(':usuario_id', $usuario_id);
+        $stmt->bindParam(':especialidad_id', $especialidad_id);
+        $stmt->execute();
     }
 
-    public function actualizarDatos($table, $atribute, $value){
-        $query = "Update " . $atribute . " Set " . $value . " = :value";
+    // Método para buscar usuarios por un campo específico
+    public function busquedaUsuarios($campo, $valor)
+    {
+        $query = "SELECT u.*, ul.contrasenia, r.nombre_r AS rol
+                  FROM usuario u
+                  JOIN usuario_login ul ON u.id_u = ul.id_ul
+                  LEFT JOIN rol r ON u.rol_id = r.id
+                  WHERE ul.$campo = :valor";
         $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':valor', $valor);
+        $stmt->execute();
 
-        $value = htmlspecialchars(strip_tags($value));
-        $stmt->bindParam(":value", $value);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function busquedaUsuariosSeleccionados() {
+        // Consulta para obtener los datos de los usuarios junto con su rol y especialidad
+        $query = "SELECT 
+                      u.id_u, 
+                      u.nombre, 
+                      u.apellido, 
+                      u.cedula, 
+                      u.direccion, 
+                      u.correo, 
+                      u.telefono, 
+                      r.nombre_r AS rol, 
+                      GROUP_CONCAT(e.nombre SEPARATOR ', ') AS especialidades
+                  FROM 
+                      usuario u
+                  LEFT JOIN 
+                      rol r ON u.rol_id = r.id
+                  LEFT JOIN 
+                      especialidad_usuario eu ON u.id_u = eu.id_usuario
+                  LEFT JOIN 
+                      especialidad e ON eu.id_especialidad = e.id
+                  GROUP BY 
+                      u.id_u";
 
-        if($stmt->execute()){
-            return true;
-        }
-        return false;
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
 
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Devuelve todos los resultados como un array asociativo
+    }
+
+    // Método para eliminar un usuario
+    public function eliminarUsuario($id)
+    {
+        $query = "DELETE FROM usuario WHERE id_u = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute(); // Retorna verdadero si se elimina correctamente
     }
 }

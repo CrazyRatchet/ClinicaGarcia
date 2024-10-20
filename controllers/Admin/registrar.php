@@ -16,33 +16,35 @@ function validarTelefono($telefono)
     return preg_match('/^\d{4}-\d{4}$/', $telefono);
 }
 
+// Función para redirigir al formulario después de 5 segundos
+function redirigir()
+{
+    echo '<script>
+        setTimeout(function() {
+            window.location.href = "../../pages/Administrador/registrar.view.php";
+        }, 5000);
+    </script>';
+}
+
 // Validar teléfono
 if (!validarTelefono($_POST['telefono'])) {
-    echo 'Formato de teléfono incorrecto.';
-    echo '<script>';
+    echo '<script>alert("Formato de teléfono incorrecto.");</script>';
     redirigir();
+    exit;
 }
 
 // Validar correo
 if (!filter_var($_POST['correo'], FILTER_VALIDATE_EMAIL)) {
-    echo 'Correo inválido.';
-    echo '<script>';
+    echo '<script>alert("Correo inválido.");</script>';
     redirigir();
+    exit;
 }
 
-// Validar rol del usuario (puedes agregar más validaciones si es necesario)
-$roles_permitidos = ['administrador', 'usuario', 'medico'];
-if (!in_array($_POST['rol'], $roles_permitidos)) {
-    echo 'Rol de usuario inválido.';
-    echo '<script>';
-    redirigir();
-}
-
-// Validar la contraseña (puedes agregar más reglas de seguridad)
+// Validar la contraseña
 if (strlen($_POST['contrasenia']) < 6) {
-    echo 'La contraseña debe tener al menos 6 caracteres.';
-    echo '<script>';
+    echo '<script>alert("La contraseña debe tener al menos 6 caracteres.");</script>';
     redirigir();
+    exit;
 }
 
 // Asignar los datos validados al array asociativo
@@ -52,36 +54,18 @@ $usuario->datos['cedula'] = $_POST['cedula'];
 $usuario->datos['direccion'] = $_POST['direccion'];
 $usuario->datos['correo'] = $_POST['correo'];
 $usuario->datos['telefono'] = $_POST['telefono'];
-$usuario->datos['rol'] = $_POST['rol'];
-$usuario->datos['especialidad'] = $_POST['especialidad'];
+$usuario->datos['rol_id'] = $_POST['rol']; // Cambiado de rol a rol_id
 
+// Asignar datos de login
 $usuario->datos_login['nombre_usuario'] = $_POST['nombre_usuario'];
 $usuario->datos_login['contrasenia'] = password_hash($_POST['contrasenia'], PASSWORD_DEFAULT);
 
-// Verificar si el usuario ya existe
-$registro_existente = $usuario->busquedaUsuarios("usuarios", "cedula", $usuario->datos['cedula']);
-$usuario_existente = $usuario->busquedaUsuarios("usuarios_login", "nombre_usuario", $usuario->datos_login['nombre_usuario']);
-
-echo '<script>';
-if ($registro_existente || $usuario_existente) {
-    echo 'alert("El usuario ya existe en el sistema.");';
-    redirigir();
+// Registrar el usuario
+if ($usuario->crearUsuario()) { // Cambiado de registrar() a crearUsuario()
+    echo '<script>alert("Usuario registrado correctamente.");</script>';
 } else {
-    // Intentar registrar el usuario
-    if ($usuario->registrarUsuarios()) {
-        echo 'alert("Usuario registrado exitosamente.");';
-    } else {
-        echo 'alert("Error al intentar registrar el usuario.");';
-    }
-    redirigir();
+    echo '<script>alert("Error al registrar el usuario.");</script>';
 }
 
-// Redirección al formulario después de 5 segundos
-function redirigir()
-{
-    echo 'setTimeout(function() {
-        window.location.href = "../../pages/Administrador/registrar.view.php";
-      }, 5000);';
-    echo '</script>';
-}
-require "../../pages/Administrador/registrar.view.php";
+// Redirigir a la vista después de 5 segundos
+redirigir();

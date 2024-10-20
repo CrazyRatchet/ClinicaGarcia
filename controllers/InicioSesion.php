@@ -16,8 +16,8 @@ $usuario = new Usuarios($db);
 // Verificar si se han enviado los datos del formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener y limpiar los datos del formulario
-    $nombre_usuario = trim($_POST['nombre_usuario']);
-    $contrasenia = trim($_POST['contrasenia']);
+    $nombre_usuario = isset($_POST['nombre_usuario']) ? trim($_POST['nombre_usuario']) : '';
+    $contrasenia = isset($_POST['contrasenia']) ? trim($_POST['contrasenia']) : '';
 
     // Verificar que los campos no estén vacíos
     if (empty($nombre_usuario) || empty($contrasenia)) {
@@ -27,23 +27,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Buscar el usuario en la tabla 'usuarios_login'
-    $usuarioDatos = $usuario->busquedaUsuarios('usuarios_login', 'nombre_usuario', $nombre_usuario);
+    $usuarioDatos = $usuario->busquedaUsuarios('nombre_usuario', $nombre_usuario);
 
-    // Verificar si el usuario existe
-    if ($usuarioDatos) {
+    // Verificar si la búsqueda devolvió resultados
+    if ($usuarioDatos && count($usuarioDatos) > 0) {
+        // Extraer el primer usuario del arreglo
+        $usuarioDatos = $usuarioDatos[0];
+
         // Verificar la contraseña
         if (password_verify($contrasenia, $usuarioDatos['contrasenia'])) {
             // Almacenar información del usuario en la sesión
             $_SESSION['usuario'] = $usuarioDatos['nombre_usuario'];
-            $_SESSION['rol'] = isset($usuarioDatos['rol']) ? $usuarioDatos['rol'] : null; // Verificar si el rol está disponible
+            $_SESSION['rol'] = isset($usuarioDatos['rol']) ? $usuarioDatos['rol'] : null;
             $_SESSION['loggedin'] = true;
-
             // Redirigir a la página de inicio
             header("Location: ../index.php");
             exit();
         } else {
             // Contraseña incorrecta
-            echo '<script>alert("Usuario o Contraseña incorrecta.");</script>';
+            echo '<script>alert("Usuario o contraseña incorrecta.");</script>';
             header("Location: ../pages/InicioSesion.view.php");
             exit();
         }

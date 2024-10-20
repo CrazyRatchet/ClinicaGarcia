@@ -22,35 +22,82 @@
         <!-- Menú desplegable -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="<?php echo $prefix; ?>Administrador/registrar.view.php">Registrarse</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
+                    <a class="nav-link dropdown-toggle <?php echo ($rol_usuario !== 'Administrador') ? 'disabled' : ''; ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Administrador
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li>
+                            <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/registrar.view.php">Registrar</a>
+                            <span class="dropdown-item text-muted">Registrar</span>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/gestion_usuarios.view.php">Gestión de Usuarios</a>
+                            <span class="dropdown-item text-muted">Gestión de Usuarios</span>
+                        </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li>
+                            <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/roles.view.php">Roles</a>
+                            <span class="dropdown-item text-muted">Roles</span>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/permisos.view.php">Permisos</a>
+                            <span class="dropdown-item text-muted">Permisos</span>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/servicios.view.php">Servicios</a>
+                            <span class="dropdown-item text-muted">Servicios</span>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/especialidades.view.php">Especialidades</a>
+                            <span class="dropdown-item text-muted">Especialidades</span>
+                        </li>
                     </ul>
                 </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Médico
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Ejemplo</a></li>
+                        <li><a class="dropdown-item" href="#">Ejemplo</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Administrativos
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Ejemplo</a></li>
+                        <li><a class="dropdown-item" href="#">Ejemplo</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Citas
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Ejemplo</a></li>
+                        <li><a class="dropdown-item" href="#">Ejemplo</a></li>
+                    </ul>
+                </li>
+
+                <!-- Sección disabled, por ejemplo -->
                 <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                    <span class="nav-link text-muted">Disabled</span>
                 </li>
             </ul>
 
             <!-- Lógica de autenticación -->
-            <?php if (isset($_SESSION['usuario'])) : ?>
+            <?php if (isset($_SESSION['loggedin'])) : ?>
                 <!-- Mostrar botón de logout si el usuario está autenticado -->
                 <form method="POST" action="<?php echo $prefix; ?>../controllers/cierreSesion.php">
-                    <button class="btn btn-outline-light" type="submit">Log out</button>
+                    <button class="btn btn-outline-light" type="submit">Cerrar Sesión</button>
                 </form>
             <?php else : ?>
                 <!-- Mostrar botón de iniciar sesión si el usuario no está autenticado -->
