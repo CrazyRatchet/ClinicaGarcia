@@ -23,7 +23,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle <?php echo ($rol_usuario !== 'Administrador') ? 'disabled' : ''; ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Administrador
                     </a>
                     <ul class="dropdown-menu">
@@ -62,18 +62,20 @@
                         Médico
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Ejemplo</a></li>
-                        <li><a class="dropdown-item" href="#">Ejemplo</a></li>
+                        <li><a class="dropdown-item" href="<?php echo $prefix; ?>Medicos/Gestionar_datos_medicos.view.php">Gestionar Datos Medicos</a></li>
+                        <li><a class="dropdown-item" href="<?php echo $prefix; ?>Medicos/registrar_datos_medicos.view.php">Registrar Historial Medico</a></li>
+                        <li><a class="dropdown-item" href="<?php echo $prefix; ?>Medicos/registrar_datos_medicos.view.php">Gestionar Historial Medico</a></li>
+                        <li><a class="dropdown-item" href="<?php echo $prefix; ?>Medicos/registrar_datos_medicos.view.php">Consultar Citas</a></li>
                     </ul>
                 </li>
-
+    
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Administrativos
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Ejemplo</a></li>
-                        <li><a class="dropdown-item" href="#">Ejemplo</a></li>
+                        <li><a class="dropdown-item" href="<?php echo $prefix; ?>Administrativos/RegistrarPacientes.view.php">RegistrarPacientes</a></li>
+                        <li><a class="dropdown-item" href="<?php echo $prefix; ?>Administrativos/GestionarPacientes.view.php">GestionarPacientes</a></li>
                     </ul>
                 </li>
 
@@ -82,8 +84,8 @@
                         Citas
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Ejemplo</a></li>
-                        <li><a class="dropdown-item" href="#">Ejemplo</a></li>
+                    <li><a class="dropdown-item" href="<?php echo $prefix; ?>Citas/AgendarCitas.view.php">Agendar Citas</a></li>
+                    <li><a class="dropdown-item" href="<?php echo $prefix; ?>Citas/GestionarCitas.view.php">Gestionar Citas</a></li>
                     </ul>
                 </li>
 

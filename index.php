@@ -30,7 +30,7 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <!-- Menú de Administrador -->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle <?php echo ($rol_usuario !== 'Administrador') ? 'disabled' : ''; ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Administrador
             </a>
             <ul class="dropdown-menu">

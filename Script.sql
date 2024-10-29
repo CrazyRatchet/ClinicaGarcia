@@ -75,3 +75,26 @@ CREATE TABLE especialidad_usuario (
     FOREIGN KEY (id_especialidad) REFERENCES especialidad(id) ON DELETE CASCADE,
     UNIQUE (id_usuario, id_especialidad)
 );
+
+CREATE TABLE pacientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    cedula VARCHAR(20) NOT NULL UNIQUE,
+    peso DECIMAL(5,2),
+    tipo_sangre VARCHAR(3),
+    altura DECIMAL(4,2),
+    alergias TEXT,
+    fecha_nacimiento DATE
+);
+
+CREATE TABLE citas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    paciente_id INT NOT NULL,  
+    doctor_id INT NOT NULL,    
+    fecha DATE NOT NULL,
+    hora TIME NOT NULL,
+    estado ENUM('pendiente', 'confirmada', 'cancelada') DEFAULT 'pendiente',
+    FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
+    FOREIGN KEY (doctor_id) REFERENCES usuarios(id_u) 
+);
+
