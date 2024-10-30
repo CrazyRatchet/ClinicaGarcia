@@ -43,10 +43,10 @@ class Citas {
     // Método para obtener una cita por su ID
     public function obtenerCitaPorId($id) {
         $query = "SELECT citas.id, citas.paciente_id, citas.doctor_id, citas.fecha, citas.hora,
-                         pacientes.nombre AS paciente, usuarios.nombre AS medico
+                         pacientes.nombre AS paciente, usuario.nombre AS medico
                   FROM citas
                   JOIN pacientes ON citas.paciente_id = pacientes.id
-                  JOIN usuarios ON citas.doctor_id = usuarios.id_u
+                  JOIN usuario ON citas.doctor_id = usuario.id_u
                   WHERE citas.id = :id";
 
         $stmt = $this->conn->prepare($query);
@@ -72,4 +72,34 @@ class Citas {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retorna citas del doctor
     }
+    public function modificarCita($id, $paciente_id, $doctor_id, $fecha, $hora) {
+        $query = "UPDATE citas 
+                  SET paciente_id = :paciente_id, doctor_id = :doctor_id, fecha = :fecha, hora = :hora 
+                  WHERE id = :id";
+    
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':paciente_id', $paciente_id);
+        $stmt->bindParam(':doctor_id', $doctor_id);
+        $stmt->bindParam(':fecha', $fecha);
+        $stmt->bindParam(':hora', $hora);
+        $stmt->bindParam(':id', $id);
+    
+        return $stmt->execute();
+    }
+    
+    public function obtenerCitasPorFecha($fecha) {
+        $query = "SELECT citas.id, pacientes.nombre AS paciente, usuario.nombre AS medico, 
+                         citas.hora, citas.estado 
+                  FROM citas 
+                  JOIN pacientes ON citas.paciente_id = pacientes.id
+                  JOIN usuario ON citas.doctor_id = usuario.id_u
+                  WHERE citas.fecha = :fecha";
+    
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':fecha', $fecha);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }

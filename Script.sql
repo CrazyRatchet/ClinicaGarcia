@@ -78,13 +78,14 @@ CREATE TABLE especialidad_usuario (
 
 CREATE TABLE pacientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL,
-    cedula VARCHAR(20) NOT NULL UNIQUE,
-    peso DECIMAL(5,2),
-    tipo_sangre VARCHAR(3),
-    altura DECIMAL(4,2),
-    alergias TEXT,
-    fecha_nacimiento DATE
+    nombre VARCHAR(100) NOT NULL,
+    cedula VARCHAR(20) NOT NULL,
+    edad INT NULL,
+    peso DECIMAL(5,2) NULL,
+    tipo_sangre VARCHAR(3) NULL,
+    altura DECIMAL(4,2) NULL,
+    alergias TEXT NULL,
+    fecha_nacimiento DATE NULL
 );
 
 CREATE TABLE citas (
@@ -95,6 +96,21 @@ CREATE TABLE citas (
     hora TIME NOT NULL,
     estado ENUM('pendiente', 'confirmada', 'cancelada') DEFAULT 'pendiente',
     FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
-    FOREIGN KEY (doctor_id) REFERENCES usuarios(id_u) 
+    FOREIGN KEY (doctor_id) REFERENCES usuario(id_u) 
 );
 
+CREATE TABLE historias_medicas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    paciente_id INT NOT NULL,
+    nombre_completo VARCHAR(100) NOT NULL,
+    fecha_nacimiento DATE NOT NULL,
+    numero_identificacion VARCHAR(50),
+    direccion VARCHAR(255),
+    numero_telefono VARCHAR(20),
+    antecedentes_familiares TEXT,
+    medicamentos_actuales TEXT,
+    alergias TEXT,
+    historia_sintomas TEXT,
+    fecha DATE NOT NULL,
+    FOREIGN KEY (paciente_id) REFERENCES pacientes(id) ON DELETE CASCADE
+);

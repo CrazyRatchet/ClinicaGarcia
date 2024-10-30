@@ -1,5 +1,4 @@
 <?php
-session_start();
 include '../../db/Database.php';
 include '../../db/Citas.php';
 
@@ -39,7 +38,7 @@ $citas = $citasModel->obtenerCitas();
                             <td><?php echo $cita['fecha']; ?></td>
                             <td><?php echo $cita['hora']; ?></td>
                             <td>
-                                <a href="modificar_cita.php?id=<?php echo $cita['id']; ?>" class="btn btn-warning">Modificar</a>
+                                <a href="ModificarCitas.view.php?id=<?php echo $cita['id']; ?>" class="btn btn-warning">Modificar</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -50,3 +49,24 @@ $citas = $citasModel->obtenerCitas();
 </div>
 
 <?php require '../partials/footer.php'; ?>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        <?php if (isset($_SESSION['message'])): ?>
+            const messageType = "<?php echo $_SESSION['message_type']; ?>";
+            const message = "<?php echo $_SESSION['message']; ?>";
+            Swal.fire({
+                icon: messageType,
+                title: messageType === 'success' ? 'Éxito' : 'Error',
+                text: message,
+                confirmButtonText: 'Aceptar'
+            });
+            <?php 
+            // Destruir la sesión del mensaje después de mostrarlo
+            unset($_SESSION['message']);
+            unset($_SESSION['message_type']);
+            ?>
+        <?php endif; ?>
+    });
+</script>

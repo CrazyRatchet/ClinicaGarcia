@@ -64,24 +64,3 @@ $medicos = $usuariosModel->busquedaUsuariosSeleccionados(); // Método para obte
 </div>
 
 <?php require '../partials/footer.php'; ?>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        <?php if (isset($_SESSION['message'])): ?>
-            const messageType = "<?php echo $_SESSION['message_type']; ?>";
-            const message = "<?php echo $_SESSION['message']; ?>";
-            Swal.fire({
-                icon: messageType,
-                title: messageType === 'success' ? 'Éxito' : 'Error',
-                text: message,
-                confirmButtonText: 'Aceptar'
-            });
-            <?php 
-            // Destruir la sesión del mensaje después de mostrarlo
-            unset($_SESSION['message']);
-            unset($_SESSION['message_type']);
-            ?>
-        <?php endif; ?>
-    });
-</script>
