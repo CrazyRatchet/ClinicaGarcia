@@ -63,7 +63,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="<?php echo $prefix; ?>Medicos/Gestionar_datos_medicos.view.php">Gestionar Datos Medicos</a></li>
-                        <li><a class="dropdown-item" href="<?php echo $prefix; ?>Medicos/Gestionar_Historial.view.php">Gestionar Historial Medico</a></li>
+                        <!--<li><a class="dropdown-item" href="<?php echo $prefix; ?>Medicos/Gestionar_Historial.view.php">Gestionar Historial Medico</a></li>-->
                         <li><a class="dropdown-item" href="<?php echo $prefix; ?>Medicos/ConsultarCitas.view.php">Consultar Citas</a></li>
                     </ul>
                 </li>
