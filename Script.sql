@@ -114,3 +114,28 @@ CREATE TABLE historias_medicas (
     fecha DATE NOT NULL,
     FOREIGN KEY (paciente_id) REFERENCES pacientes(id) ON DELETE CASCADE
 );
+
+CREATE TABLE utensilio (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
+    descripcion TEXT,
+    costo DECIMAL(10, 2) NOT NULL,
+    imagen LONGTEXT
+);
+
+CREATE TABLE inventario_utensilio (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    utensilio_id INT NOT NULL,
+    cantidad INT NOT NULL,
+    FOREIGN KEY (utensilio_id) REFERENCES utensilio(id) ON DELETE CASCADE
+);
+
+CREATE TABLE uso_utensilio (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cita_id INT NOT NULL,
+    utensilio_id INT NOT NULL,
+    cantidad_usada INT NOT NULL,
+    costo_total DECIMAL(10, 2) AS (cantidad_usada * (SELECT costo FROM utensilio WHERE utensilio.id = uso_utensilio.utensilio_id)) STORED,
+    FOREIGN KEY (cita_id) REFERENCES citas(id) ON DELETE CASCADE,
+    FOREIGN KEY (utensilio_id) REFERENCES utensilio(id) ON DELETE CASCADE
+);
