@@ -92,6 +92,16 @@
                     </ul>
                 </li>
 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Inventario
+                    </a>
+                    <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="<?php echo $prefix; ?>Inventario/listarUtensilio.view.php">Listar Utensilios</a></li>
+                    <li><a class="dropdown-item" href="<?php echo $prefix; ?>Inventario/registrarUtensilios.view.php">Registrar Utensilios</a></li>
+                    </ul>
+                </li>
+
                 <!-- Sección disabled, por ejemplo -->
                 <li class="nav-item">
                     <span class="nav-link text-muted">Disabled</span>

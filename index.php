@@ -76,6 +76,17 @@
               <li><a class="dropdown-item" href="#">Ejemplo</a></li>
             </ul>
           </li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle <?php echo ($rol_usuario === null) ? 'disabled' : ''; ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Inventario
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="pages/Inventario/registrarUtensilios.view.php">Registrar Utensilio</a></li>
+              <li><a class="dropdown-item" href="pages/Inventario/listarUtensilio.view.php">Ver Inventario</a></li>
+            </ul>
+          </li>
+
         </ul>
 
         <!-- Lógica de autenticación -->
