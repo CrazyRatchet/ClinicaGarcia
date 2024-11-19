@@ -54,6 +54,10 @@
                             <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/especialidades.view.php">Especialidades</a>
                             <span class="dropdown-item text-muted">Especialidades</span>
                         </li>
+                        <li>
+                            <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/medicina.view.php">Medicina</a>
+                            <span class="dropdown-item text-muted">Medicina</span>
+                        </li>
                     </ul>
                 </li>
 
