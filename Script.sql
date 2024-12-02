@@ -139,3 +139,92 @@ CREATE TABLE uso_utensilio (
     FOREIGN KEY (cita_id) REFERENCES citas(id) ON DELETE CASCADE,
     FOREIGN KEY (utensilio_id) REFERENCES utensilio(id) ON DELETE CASCADE
 );
+
+
+-- Tabla de medicinas con campo de imagen 
+
+CREATE TABLE medicina ( 
+
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+
+    nombre VARCHAR(100) NOT NULL UNIQUE, 
+
+    descripcion TEXT, 
+
+    costo DECIMAL(10, 2) NOT NULL, 
+
+    imagen LONGTEXT  -- Campo para almacenar la imagen en Base64 o URL de la imagen 
+
+); 
+
+ 
+
+-- Tabla de inventario de medicinas 
+
+CREATE TABLE inventario_medicina ( 
+
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+
+    medicina_id INT NOT NULL, 
+
+    cantidad INT NOT NULL, 
+
+    FOREIGN KEY (medicina_id) REFERENCES medicina(id) ON DELETE CASCADE 
+
+); 
+
+ 
+
+-- Tabla de síntomas 
+
+CREATE TABLE sintoma ( 
+
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+
+    nombre VARCHAR(100) NOT NULL UNIQUE, 
+
+    descripcion TEXT 
+
+); 
+
+ 
+
+-- Tabla intermedia para relacionar medicinas con síntomas 
+
+CREATE TABLE medicina_sintoma ( 
+
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+
+    medicina_id INT NOT NULL, 
+
+    sintoma_id INT NOT NULL, 
+
+    FOREIGN KEY (medicina_id) REFERENCES medicina(id) ON DELETE CASCADE, 
+
+    FOREIGN KEY (sintoma_id) REFERENCES sintoma(id) ON DELETE CASCADE, 
+
+    UNIQUE (medicina_id, sintoma_id)  -- Evitar duplicados en la relación 
+
+); 
+
+ 
+
+-- Tabla para registrar el uso de medicinas en las citas 
+
+CREATE TABLE uso_medicina ( 
+
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+
+    cita_id INT NOT NULL, 
+
+    medicina_id INT NOT NULL, 
+
+    cantidad_usada INT NOT NULL, 
+
+    costo_total DECIMAL(10, 2) AS (cantidad_usada * (SELECT costo FROM medicina WHERE medicina.id = uso_medicina.medicina_id)) STORED, 
+
+    FOREIGN KEY (cita_id) REFERENCES citas(id) ON DELETE CASCADE, 
+
+    FOREIGN KEY (medicina_id) REFERENCES medicina(id) ON DELETE CASCADE 
+
+); 
