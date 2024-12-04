@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hora = $_POST['hora'];
 
     // Validar que no haya citas existentes para el mismo paciente y doctor en la misma fecha y hora
-    if ($citasModel->verificarCitaExistente($paciente_id, $doctor_id, $fecha, $hora, $id)) {
+    if ($citasModel->verificarCitaExistente($paciente_id, $doctor_id, $fecha, $hora)) {
         $_SESSION['message'] = "Ya existe una cita para este paciente con el médico en la misma fecha y hora.";
         $_SESSION['message_type'] = "error";
     } else {

@@ -30,7 +30,33 @@ if (!$detalles_especialidad || count($detalles_especialidad) == 0) {
 // Extraer el primer (y único) resultado
 $detalles_especialidad = $detalles_especialidad[0];
 ?>
+  <style>
+    /* Asegura que el body ocupe toda la altura */
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
 
+    .container {
+      flex: 1;
+    }
+
+    /* Estilo de la tarjeta */
+    .card {
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Footer al final de la página */
+    footer {
+      margin-top: auto;
+      padding: 20px 0;
+      background-color: #f8f9fa;
+      text-align: center;
+    }
+  </style>
 <div class="container mt-5">
     <h2 class="text-center mb-4">Modificar Especialidad</h2>
     <form action="../../controllers/Admin/modificar_especialidad.php" method="post" id="modificarEspecialidadForm">

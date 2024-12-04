@@ -1,71 +1,70 @@
 <?php
-// Include de conexión y clase Usuarios
+session_start();
 include '../../db/Database.php';
-include '../../db/Usuarios.php';
+include '../../db/Usuarios.php'; 
 
 // Crear una instancia de la clase Database y obtener la conexión
 $database = new Database();
 $db = $database->getConnection();
+$usuarioModel = new Usuarios($db);
 
-// Crear una instancia de la clase Usuarios
-$usuario = new Usuarios($db);
+// Verificar si se ha enviado el formulario
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Validar el formato de teléfono
+    if (!preg_match('/^\d{4}-\d{4}$/', $_POST['telefono'])) {
+        $_SESSION['message'] = "Formato de teléfono incorrecto.";
+        $_SESSION['message_type'] = "error";
+        header("Location: /ClinicaGarcia/pages/Administrador/registrar.view.php");
+        exit();
+    }
 
-// Función para validar el formato de teléfono
-function validarTelefono($telefono)
-{
-    return preg_match('/^\d{4}-\d{4}$/', $telefono);
-}
+    // Validar el correo
+    if (!filter_var($_POST['correo'], FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['message'] = "Correo inválido.";
+        $_SESSION['message_type'] = "error";
+        header("Location: /ClinicaGarcia/pages/Administrador/registrar.view.php");
+        exit();
+    }
 
-// Función para redirigir al formulario después de 5 segundos
-function redirigir()
-{
-    echo '<script>
-        setTimeout(function() {
-            window.location.href = "../../pages/Administrador/registrar.view.php";
-        }, 5000);
-    </script>';
-}
+    // Validar la contraseña
+    if (strlen($_POST['contrasenia']) < 6) {
+        $_SESSION['message'] = "La contraseña debe tener al menos 6 caracteres.";
+        $_SESSION['message_type'] = "error";
+        header("Location: /ClinicaGarcia/pages/Administrador/registrar.view.php");
+        exit();
+    }
 
-// Validar teléfono
-if (!validarTelefono($_POST['telefono'])) {
-    echo '<script>alert("Formato de teléfono incorrecto.");</script>';
-    redirigir();
-    exit;
-}
+    // Asignar los datos validados al array asociativo
+    $usuarioData = [
+        'nombre' => $_POST['nombre'],
+        'apellido' => $_POST['apellido'],
+        'cedula' => $_POST['cedula'],
+        'direccion' => $_POST['direccion'],
+        'correo' => $_POST['correo'],
+        'telefono' => $_POST['telefono'],
+        'rol_id' => $_POST['rol'], // Cambiado de rol a rol_id
+        'nombre_usuario' => $_POST['nombre_usuario'],
+        'contrasenia' => password_hash($_POST['contrasenia'], PASSWORD_DEFAULT)
+    ];
 
-// Validar correo
-if (!filter_var($_POST['correo'], FILTER_VALIDATE_EMAIL)) {
-    echo '<script>alert("Correo inválido.");</script>';
-    redirigir();
-    exit;
-}
+    // Asignar los datos de usuario al modelo
+    $usuarioModel->datos = $usuarioData;
 
-// Validar la contraseña
-if (strlen($_POST['contrasenia']) < 6) {
-    echo '<script>alert("La contraseña debe tener al menos 6 caracteres.");</script>';
-    redirigir();
-    exit;
-}
-
-// Asignar los datos validados al array asociativo
-$usuario->datos['nombre'] = $_POST['nombre'];
-$usuario->datos['apellido'] = $_POST['apellido'];
-$usuario->datos['cedula'] = $_POST['cedula'];
-$usuario->datos['direccion'] = $_POST['direccion'];
-$usuario->datos['correo'] = $_POST['correo'];
-$usuario->datos['telefono'] = $_POST['telefono'];
-$usuario->datos['rol_id'] = $_POST['rol']; // Cambiado de rol a rol_id
-
-// Asignar datos de login
-$usuario->datos_login['nombre_usuario'] = $_POST['nombre_usuario'];
-$usuario->datos_login['contrasenia'] = password_hash($_POST['contrasenia'], PASSWORD_DEFAULT);
-
-// Registrar el usuario
-if ($usuario->crearUsuario()) { // Cambiado de registrar() a crearUsuario()
-    echo '<script>alert("Usuario registrado correctamente.");</script>';
+    // Intentar registrar el usuario
+    if ($usuarioModel->crearUsuario()) {
+        $_SESSION['message'] = "Usuario registrado correctamente.";
+        $_SESSION['message_type'] = "success";
+        header("Location: /ClinicaGarcia/pages/Administrador/registrar.view.php");
+        exit();
+    } else {
+        $_SESSION['message'] = "Error al registrar el usuario. Intente nuevamente.";
+        $_SESSION['message_type'] = "error";
+        header("Location: /ClinicaGarcia/pages/Administrador/registrar.view.php");
+        exit();
+    }
 } else {
-    echo '<script>alert("Error al registrar el usuario.");</script>';
+    // Redirigir si el acceso no es por POST
+    header("Location: /ClinicaGarcia/pages/Administrador/registrar.view.php");
+    exit();
 }
 
-// Redirigir a la vista después de 5 segundos
-redirigir();

@@ -27,8 +27,14 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
     exit;
 }
 
-// Obtener los datos seleccionados de los pacientes
-$pacientes = $paciente->busquedaPacientesSeleccionados();
+// Verificar si se realizó una búsqueda por cédula
+if (isset($_GET['cedula']) && !empty($_GET['cedula'])) {
+    $cedula = $_GET['cedula'];
+    $pacientes = $paciente->buscarPacientePorCedula($cedula); // Nueva función en el modelo
+} else {
+    // Obtener los datos seleccionados de los pacientes
+    $pacientes = $paciente->busquedaPacientesSeleccionados();
+}
 
 // Verificar si se obtuvieron resultados
 if ($pacientes) {

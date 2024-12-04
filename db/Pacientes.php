@@ -13,13 +13,20 @@ class Pacientes
     public function crearPacienteBasico()
     {
         try {
+            // Verificar si el paciente ya existe
+            if ($this->verificarPacienteExistente($this->datos_paciente['cedula'])) {
+                throw new Exception("El paciente ya está registrado.");
+            }
+    
             // Inserta solo nombre y cédula, dejando los demás campos vacíos o nulos
-            $query = "INSERT INTO pacientes (nombre, cedula, edad, peso, tipo_sangre, altura, alergias, fecha_nacimiento)
-                    VALUES (:nombre, :cedula, NULL, NULL, NULL, NULL, NULL, NULL)";
+            $query = "INSERT INTO pacientes (nombre, cedula, sexo, fecha_nacimiento, edad, peso, altura, tipo_sangre, correo, alergias, medicamentos_regulares, padecimientos, fecha_datos)
+            VALUES (:nombre, :cedula, NULL, NULL, NULL, NULL, NULL, NULL, :correo, NULL, NULL, NULL, NULL)";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':nombre', $this->datos_paciente['nombre']);
             $stmt->bindParam(':cedula', $this->datos_paciente['cedula']);
-
+            $stmt->bindParam(':correo', $this->datos_paciente['correo']);
+  
+    
             if ($stmt->execute()) {
                 return true;
             } else {
@@ -30,38 +37,72 @@ class Pacientes
             return false;
         }
     }
+    
+    public function verificarPacienteExistente($cedula)
+{
+    try {
+        // Consulta para verificar si existe un paciente con la misma cédula
+        $query = "SELECT COUNT(*) FROM pacientes WHERE cedula = :cedula";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':cedula', $cedula);
+        $stmt->execute();
+
+        // Devuelve true si encuentra al menos un registro
+        return $stmt->fetchColumn() > 0;
+    } catch (Exception $e) {
+        error_log("Error en verificarPacienteExistente: " . $e->getMessage());
+        return false;
+    }
+}
+ // función para buscar pacientes por cédula
+ public function buscarPacientePorCedula($cedula) {
+    $query = "SELECT * FROM pacientes WHERE cedula LIKE :cedula";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':cedula', $cedula);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
     // Método para que el médico complete los datos del paciente
     public function completarDatosPaciente($id)
-    {
-        try {
-            $query = "UPDATE pacientes
-                    SET edad = :edad, peso = :peso, tipo_sangre = :tipo_sangre, altura = :altura, 
-                        alergias = :alergias, fecha_nacimiento = :fecha_nacimiento
-                    WHERE id = :id";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':id', $id);
-            $stmt->bindParam(':edad', $this->datos_paciente['edad']);
-            $stmt->bindParam(':peso', $this->datos_paciente['peso']);
-            $stmt->bindParam(':tipo_sangre', $this->datos_paciente['tipo_sangre']);
-            $stmt->bindParam(':altura', $this->datos_paciente['altura']);
-            $stmt->bindParam(':alergias', $this->datos_paciente['alergias']);
-            $stmt->bindParam(':fecha_nacimiento', $this->datos_paciente['fecha_nacimiento']);
+{
+    try {
+        $query = "UPDATE pacientes
+                  SET sexo = :sexo, fecha_nacimiento = :fecha_nacimiento,
+                      edad = :edad, peso = :peso, altura = :altura, tipo_sangre = :tipo_sangre,
+                      alergias = :alergias, medicamentos_regulares = :medicamentos_regulares,
+                      padecimientos = :padecimientos, fecha_datos = :fecha_datos
+                  WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
 
-            if ($stmt->execute()) {
-                return true;
-            } else {
-                throw new Exception("Error al ejecutar la consulta de actualización.");
-            }
-        } catch (Exception $e) {
-            error_log("Error en completarDatosPaciente: " . $e->getMessage());
-            return false;
+        // Asignar los valores a los parámetros
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':sexo', $this->datos_paciente['sexo']);
+        $stmt->bindParam(':fecha_nacimiento', $this->datos_paciente['fecha_nacimiento']);
+        $stmt->bindParam(':edad', $this->datos_paciente['edad']);
+        $stmt->bindParam(':peso', $this->datos_paciente['peso']);
+        $stmt->bindParam(':altura', $this->datos_paciente['altura']);
+        $stmt->bindParam(':tipo_sangre', $this->datos_paciente['tipo_sangre']);;
+        $stmt->bindParam(':alergias', $this->datos_paciente['alergias']);
+        $stmt->bindParam(':medicamentos_regulares', $this->datos_paciente['medicamentos_regulares']);
+        $stmt->bindParam(':padecimientos', $this->datos_paciente['padecimientos']);
+        $stmt->bindParam(':fecha_datos', $this->datos_paciente['fecha_datos']);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            throw new Exception("Error al ejecutar la consulta de actualización.");
         }
+    } catch (Exception $e) {
+        error_log("Error en completarDatosPaciente: " . $e->getMessage());
+        return false;
     }
+}
+
     public function busquedaPacientesSeleccionados()
 {
     try {
-        $query = "SELECT id, nombre, cedula, edad, peso, tipo_sangre, altura, alergias, fecha_nacimiento FROM pacientes";
+        $query = "SELECT id, nombre, cedula, edad, peso, tipo_sangre, correo, altura, alergias, fecha_nacimiento FROM pacientes";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -82,14 +123,17 @@ public function eliminarPaciente($id)
         return false;
     }
 }
-public function modificarPaciente($id, $nombre, $cedula)
+public function modificarPaciente($id, $nombre, $cedula, $correo)
 {
     try {
-        $query = "UPDATE pacientes SET nombre = :nombre, cedula = :cedula WHERE id = :id";
+        $query = "UPDATE pacientes 
+                SET nombre = :nombre, cedula = :cedula, correo = :correo 
+                WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':cedula', $cedula);
+        $stmt->bindParam(':correo', $correo);
         return $stmt->execute();
     } catch (Exception $e) {
         error_log("Error en modificarPaciente: " . $e->getMessage());
@@ -98,60 +142,32 @@ public function modificarPaciente($id, $nombre, $cedula)
 }
 public function obtenerDatosMedicos($id)
 {
-    $query = "SELECT edad, peso, tipo_sangre, altura, alergias, fecha_nacimiento FROM pacientes WHERE id = :id";
+    $query = "SELECT 
+                sexo, 
+                edad, 
+                peso, 
+                altura, 
+                tipo_sangre, 
+                correo, 
+                alergias, 
+                medicamentos_regulares, 
+                padecimientos, 
+                fecha_datos, 
+                fecha_nacimiento 
+              FROM pacientes 
+              WHERE id = :id";
+
     $stmt = $this->conn->prepare($query);
     $stmt->bindParam(':id', $id);
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-public function agregarHistorialMedico($paciente_id, $nombre_completo, $fecha_nacimiento, $numero_identificacion, $direccion, $numero_telefono,
-                                       $antecedentes_familiares, $medicamentos_actuales, $alergias, $historia_sintomas, $fecha) {
-    $query = "INSERT INTO historias_medicas (paciente_id, nombre_completo, fecha_nacimiento, numero_identificacion, direccion, numero_telefono,
-              antecedentes_familiares, medicamentos_actuales, alergias, historia_sintomas, fecha)
-              VALUES (:paciente_id, :nombre_completo, :fecha_nacimiento, :numero_identificacion, :direccion, :numero_telefono,
-              :antecedentes_familiares, :medicamentos_actuales, :alergias, :historia_sintomas, :fecha)";
-    
-    $stmt = $this->conn->prepare($query);
 
-    // Bind parameters
-    $stmt->bindParam(':paciente_id', $paciente_id);
-    $stmt->bindParam(':nombre_completo', $nombre_completo);
-    $stmt->bindParam(':fecha_nacimiento', $fecha_nacimiento);
-    $stmt->bindParam(':numero_identificacion', $numero_identificacion);
-    $stmt->bindParam(':direccion', $direccion);
-    $stmt->bindParam(':numero_telefono', $numero_telefono);
-    $stmt->bindParam(':antecedentes_familiares', $antecedentes_familiares);
-    $stmt->bindParam(':medicamentos_actuales', $medicamentos_actuales);
-    $stmt->bindParam(':alergias', $alergias);
-    $stmt->bindParam(':historia_sintomas', $historia_sintomas);
-    $stmt->bindParam(':fecha', $fecha);
-
-    return $stmt->execute(); // Devuelve verdadero si se insertó correctamente
-}
-public function obtenerPacientes() {
-    $query = "SELECT id, nombre FROM pacientes"; // Ajusta según la estructura de tu tabla de pacientes
-    $stmt = $this->conn->prepare($query);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
 // Obtener historial médico por ID de paciente
-public function obtenerHistorialPorPacienteId($pacienteId) {
-    $query = "SELECT * FROM historias_medicas WHERE paciente_id = :paciente_id";
-    $stmt = $this->conn->prepare($query);
-    $stmt->bindParam(':paciente_id', $pacienteId);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
+
 
 // Modificar historial médico
 
-public function tieneHistorialMedico($pacienteId) {
-    $query = "SELECT COUNT(*) FROM historias_medicas WHERE paciente_id = :paciente_id";
-    $stmt = $this->conn->prepare($query);
-    $stmt->bindParam(':paciente_id', $pacienteId);
-    $stmt->execute();
-    return $stmt->fetchColumn() > 0; // Devuelve true si hay registros
-}
 public function obtenerPacientePorId($id) {
     $query = "SELECT * FROM pacientes WHERE id = :id LIMIT 1";
     $stmt = $this->conn->prepare($query);
@@ -160,53 +176,17 @@ public function obtenerPacientePorId($id) {
 
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-public function obtenerHistorialPorId($id) {
-    $query = "SELECT * FROM historias_medicas WHERE id = :id LIMIT 1";
-    $stmt = $this->conn->prepare($query);
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-
-    // Verifica si se encontró un historial
-    if ($stmt->rowCount() > 0) {
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+public function obtenerTodosLosPacientes()
+{
+    try {
+        $query = "SELECT * FROM pacientes";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        error_log("Error en obtenerTodosLosPacientes: " . $e->getMessage());
+        return [];
     }
-
-    return null; // Retorna null si no se encontró el historial
-}
-
-public function modificarHistorialMedico($id, $paciente_id, $nombre_completo, $fecha_nacimiento, $numero_identificacion, $direccion, $numero_telefono,
-                                         $antecedentes_familiares, $medicamentos_actuales, $alergias, $historia_sintomas, $fecha) {
-    $query = "UPDATE historias_medicas SET 
-              paciente_id = :paciente_id,
-              nombre_completo = :nombre_completo,
-              fecha_nacimiento = :fecha_nacimiento,
-              numero_identificacion = :numero_identificacion,
-              direccion = :direccion,
-              numero_telefono = :numero_telefono,
-              antecedentes_familiares = :antecedentes_familiares,
-              medicamentos_actuales = :medicamentos_actuales,
-              alergias = :alergias,
-              historia_sintomas = :historia_sintomas,
-              fecha = :fecha
-              WHERE id = :id";
-
-    $stmt = $this->conn->prepare($query);
-
-    // Bind parameters
-    $stmt->bindParam(':id', $id);
-    $stmt->bindParam(':paciente_id', $paciente_id);
-    $stmt->bindParam(':nombre_completo', $nombre_completo);
-    $stmt->bindParam(':fecha_nacimiento', $fecha_nacimiento);
-    $stmt->bindParam(':numero_identificacion', $numero_identificacion);
-    $stmt->bindParam(':direccion', $direccion);
-    $stmt->bindParam(':numero_telefono', $numero_telefono);
-    $stmt->bindParam(':antecedentes_familiares', $antecedentes_familiares);
-    $stmt->bindParam(':medicamentos_actuales', $medicamentos_actuales);
-    $stmt->bindParam(':alergias', $alergias);
-    $stmt->bindParam(':historia_sintomas', $historia_sintomas);
-    $stmt->bindParam(':fecha', $fecha);
-
-    return $stmt->execute(); // Devuelve verdadero si la actualización fue exitosa
 }
 
 }

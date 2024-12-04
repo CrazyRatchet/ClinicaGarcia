@@ -14,21 +14,22 @@ switch ($action) {
     case 'crear':
         // Asignar los valores a las propiedades del rol
         $nombre = $_POST['nombre_r'] ?? null;
-        $descripcion = $_POST['descripcion_r'] ?? null;
-        $permisosSeleccionados = $_POST['permisos'] ?? [];
+        $permisos = [
+            'permiso_administrador' => !empty($_POST['permiso_administrador']),
+            'permiso_medico' => !empty($_POST['permiso_medico']),
+            'permiso_administrativos' => !empty($_POST['permiso_administrativos']),
+            'permiso_citas' => !empty($_POST['permiso_citas']),
+            'permiso_inventario' => !empty($_POST['permiso_inventario']),
+        ];
 
-        // Validar que todos los campos obligatorios estén completos
-        if (!empty($nombre) && !empty($descripcion) && !empty($permisosSeleccionados)) {
+        // Validar que el nombre del rol sea obligatorio
+        if (!empty($nombre)) {
             // Preparar los datos para la creación del rol
-            $data = [
-                'nombre_r' => $nombre,
-                'descripcion_r' => $descripcion,
-                'permisos' => $permisosSeleccionados // IDs de los permisos relacionados
-            ];
+            $data = array_merge(['nombre_r' => $nombre], $permisos);
 
-            // Llamar al método para crear un nuevo rol con sus permisos relacionados
+            // Llamar al método para crear un nuevo rol
             if ($rolesModel->crearRol($data)) {
-                header("Location: ../../pages/Administrador/roles.view.php?msg=Rol registrado exitosamente con permisos relacionados.");
+                header("Location: ../../pages/Administrador/roles.view.php?msg=Rol registrado exitosamente.");
                 exit();
             } else {
                 header("Location: ../../pages/Administrador/roles.view.php?msg=Error al registrar el rol.");
@@ -36,17 +37,17 @@ switch ($action) {
             }
         } else {
             // Redirigir con un mensaje de campos obligatorios faltantes
-            header("Location: ../../pages/Administrador/roles.view.php?msg=Nombre, descripción y al menos un permiso son requeridos.");
+            header("Location: ../../pages/Administrador/roles.view.php?msg=El nombre del rol es obligatorio.");
             exit();
         }
 
     case 'eliminar':
-        // Obtener el ID del rol a eliminar (se espera en POST)
-        $rol_id = $_POST['id'] ?? null;
+        // Obtener el ID del rol a eliminar 
+        $rol_id = $_GET['id'] ?? null;
 
         // Verificar que el ID sea válido antes de proceder
         if ($rol_id) {
-            if ($rolesModel->eliminarRegistro($rol_id)) {
+            if ($rolesModel->eliminarRol($rol_id)) {
                 header("Location: ../../pages/Administrador/roles.view.php?msg=Rol eliminado exitosamente.");
                 exit();
             } else {
@@ -59,8 +60,8 @@ switch ($action) {
         }
 
     case 'obtener':
-        // Método para obtener todos los roles y sus permisos
-        $roles = $rolesModel->buscarRolesConPermisos();
+        // Obtener todos los roles
+        $roles = $rolesModel->obtenerRoles();
         echo json_encode($roles ?: []); // Respuesta en formato JSON
         break;
 

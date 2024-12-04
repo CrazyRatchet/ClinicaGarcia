@@ -51,16 +51,6 @@ class Usuarios
         }
     }
 
-    // Método para agregar especialidad a la tabla intermedia
-    public function agregarEspecialidad($usuario_id, $especialidad_id)
-    {
-        $query = "INSERT INTO especialidad_usuario (id_usuario, id_especialidad) VALUES (:usuario_id, :especialidad_id)";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':usuario_id', $usuario_id);
-        $stmt->bindParam(':especialidad_id', $especialidad_id);
-        $stmt->execute();
-    }
-
     // Método para buscar usuarios por un campo específico
     public function busquedaUsuarios($campo, $valor)
     {
@@ -77,7 +67,7 @@ class Usuarios
     }
     
     public function busquedaUsuariosSeleccionados() {
-        // Consulta para obtener los datos de los usuarios junto con su rol y especialidad
+        // Consulta para obtener los datos de los usuarios junto con su rol
         $query = "SELECT 
                       u.id_u, 
                       u.nombre, 
@@ -86,24 +76,20 @@ class Usuarios
                       u.direccion, 
                       u.correo, 
                       u.telefono, 
-                      r.nombre_r AS rol, 
-                      GROUP_CONCAT(e.nombre SEPARATOR ', ') AS especialidades
+                      r.nombre_r AS rol
                   FROM 
                       usuario u
                   LEFT JOIN 
                       rol r ON u.rol_id = r.id
-                  LEFT JOIN 
-                      especialidad_usuario eu ON u.id_u = eu.id_usuario
-                  LEFT JOIN 
-                      especialidad e ON eu.id_especialidad = e.id
                   GROUP BY 
                       u.id_u";
-
+    
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-
+    
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // Devuelve todos los resultados como un array asociativo
     }
+    
 
     // Método para eliminar un usuario
     public function eliminarUsuario($id)

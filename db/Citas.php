@@ -31,30 +31,31 @@ class Citas {
 
     // Método para obtener todas las citas
     public function obtenerCitas() {
-        $query = "SELECT citas.id, pacientes.nombre AS paciente, usuario.nombre AS medico, citas.fecha, citas.hora
+        $query = "SELECT citas.id, pacientes.nombre AS paciente, doctores.nombre AS medico, citas.fecha, citas.hora
                   FROM citas
                   JOIN pacientes ON citas.paciente_id = pacientes.id
-                  JOIN usuario ON citas.doctor_id = usuario.id_u";
+                  JOIN doctores ON citas.doctor_id = doctores.id";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    
     // Método para obtener una cita por su ID
     public function obtenerCitaPorId($id) {
         $query = "SELECT citas.id, citas.paciente_id, citas.doctor_id, citas.fecha, citas.hora,
-                         pacientes.nombre AS paciente, usuario.nombre AS medico
+                         pacientes.nombre AS paciente, doctores.nombre AS medico
                   FROM citas
                   JOIN pacientes ON citas.paciente_id = pacientes.id
-                  JOIN usuario ON citas.doctor_id = usuario.id_u
+                  JOIN doctores ON citas.doctor_id = doctores.id
                   WHERE citas.id = :id";
-
+    
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-
+    
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    
     // Método para obtener citas por paciente (opcional)
     public function obtenerCitasPorPaciente($paciente_id) {
         $query = "SELECT * FROM citas WHERE paciente_id = :paciente_id";
@@ -76,23 +77,23 @@ class Citas {
         $query = "UPDATE citas 
                   SET paciente_id = :paciente_id, doctor_id = :doctor_id, fecha = :fecha, hora = :hora 
                   WHERE id = :id";
-    
+        
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':paciente_id', $paciente_id);
         $stmt->bindParam(':doctor_id', $doctor_id);
         $stmt->bindParam(':fecha', $fecha);
         $stmt->bindParam(':hora', $hora);
         $stmt->bindParam(':id', $id);
-    
+        
         return $stmt->execute();
     }
     
     public function obtenerCitasPorFecha($fecha) {
-        $query = "SELECT citas.id, pacientes.nombre AS paciente, usuario.nombre AS medico, 
-                         citas.hora, citas.estado 
+        $query = "SELECT citas.id, pacientes.nombre AS paciente, doctores.nombre AS medico, 
+                         citas.hora
                   FROM citas 
                   JOIN pacientes ON citas.paciente_id = pacientes.id
-                  JOIN usuario ON citas.doctor_id = usuario.id_u
+                  JOIN doctores ON citas.doctor_id = doctores.id
                   WHERE citas.fecha = :fecha";
     
         $stmt = $this->conn->prepare($query);

@@ -1,0 +1,14 @@
+{
+    "name": "fernando/clinica-garcia",
+    "description": "Clinica Garcia",
+    "autoload": {
+        "psr-4": {
+            "Fernando\\ClinicaGarcia\\": "src/"
+        }
+    },
+    "require": {
+        "phpmailer/phpmailer": "^6.9",
+        "league/oauth2-google": "^4.0",
+        "thenetworg/oauth2-azure": "^2.2"
+    }
+}

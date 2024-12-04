@@ -42,7 +42,7 @@ $pacientes = $pacientesModel->busquedaPacientesSeleccionados();
     }
   </style>
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Gestionar Datos Medicos</h2>
+    <h2 class="text-center mb-4">Gestionar Consultas</h2>
 
     <div class="row">
         <!-- Formulario de búsqueda -->
@@ -56,6 +56,7 @@ $pacientes = $pacientesModel->busquedaPacientesSeleccionados();
             </form>
         </div>
 
+        <!-- Lista de pacientes -->
         <div class="col-md-6">
             <h4>Lista de Pacientes</h4>
             <div id="pacientesList" class="list-group">
@@ -70,10 +71,11 @@ $pacientes = $pacientesModel->busquedaPacientesSeleccionados();
             </div>
         </div>
 
+        <!-- Datos médicos -->
         <div class="col-md-6">
             <h4>Registrar/Modificar Datos Médicos</h4>
             <div id="datosMedicosContainer" style="display:none;">
-                <form id="datosMedicosForm" action="../../controllers/Medicos/registrar_datos_medicos.php" method="post">
+            <form id="datosMedicosForm" action="../../controllers/Medicos/registrar_datos_medicos_consulta.php" method="post">
                     <input type="hidden" name="id" id="pacienteId">
 
                     <!-- Campos de datos médicos -->
@@ -94,12 +96,23 @@ $pacientes = $pacientesModel->busquedaPacientesSeleccionados();
 
                     <div class="form-group">
                         <label for="altura">Altura (m):</label>
-                        <input type="number" step="0.01=" class="form-control" id="altura" name="altura" required>
+                        <input type="number" step="0.01" class="form-control" id="altura" name="altura" required>
                     </div>
 
+
                     <div class="form-group">
-                        <label for="tipo_sangre">Tipo de Sangre:</label>
-                        <input type="text" class="form-control" id="tipo_sangre" name="tipo_sangre" required>
+                        <label for="tipoSangre">Tipo de Sangre:</label>
+                        <select class="form-control" id="tipoSangre" name="tipo_sangre" required>
+                            <option value="">Seleccione</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -133,10 +146,11 @@ $pacientes = $pacientesModel->busquedaPacientesSeleccionados();
                     </div>
 
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary" id="submitBtn">Registrar/Modificar Datos Médicos</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Registrar Datos Médicos</button>
                     </div>
                 </form>
 
+                <!-- Contenedor para datos existentes -->
                 <div id="modificarContainer" style="display:none;">
                     <h5>Datos Médicos Existentes</h5>
                     <p>Sexo: <span id="sexoExistente"></span></p>
@@ -149,7 +163,7 @@ $pacientes = $pacientesModel->busquedaPacientesSeleccionados();
                     <p>Medicamentos regulares: <span id="medicamentosRegularesExistente"></span></p>
                     <p>Padecimientos: <span id="padecimientosExistente"></span></p>
                     <p>Ultima fecha de datos: <span id="fechaDatosExistente"></span></p>
-                    <button class="btn btn-warning" id="btnModificar" onclick="activarModificar()">Modificar Datos Médicos</button>
+                    <button class="btn btn-success" id="btnNuevaConsulta" onclick="registrarConsulta()">Nueva Consulta</button>
                 </div>
             </div>
         </div>
@@ -157,75 +171,99 @@ $pacientes = $pacientesModel->busquedaPacientesSeleccionados();
 </div>
 
 <script>
-    function cargarDatosMedicos(pacienteId) {
-        // Mostrar el formulario de datos médicos
-        document.getElementById('pacienteId').value = pacienteId;
+function cargarDatosMedicos(pacienteId) {
+    // Mostrar el formulario de datos médicos
+    document.getElementById('pacienteId').value = pacienteId;
 
-        // Realizar una solicitud AJAX para cargar los datos médicos del paciente
-        fetch(`../../controllers/Medicos/obtener_datos_medicos.php?id=${pacienteId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    // Llenar los campos con datos existentes
-                    document.getElementById('sexoExistente').innerText = data.sexo || 'No registrado';
-                    document.getElementById('pesoExistente').innerText = data.peso || 'No registrado';
-                    document.getElementById('alturaExistente').innerText = data.altura || 'No registrado';
-                    document.getElementById('tipoSangreExistente').innerText = data.tipo_sangre || 'No registrado';
-                    document.getElementById('fechaNacimientoExistente').innerText = data.fecha_nacimiento || 'No registrado';
-                    document.getElementById('edadExistente').innerText = data.edad || 'No registrado';
-                    document.getElementById('alergiasExistente').innerText = data.alergias || 'No registrado';
-                    document.getElementById('medicamentosRegularesExistente').innerText = data.medicamentos_regulares || 'No registrado';
-                    document.getElementById('padecimientosExistente').innerText = data.padecimientos || 'No registrado';
-                    document.getElementById('fechaDatosExistente').innerText = data.fecha_datos || 'No registrado';
+    // Realizar una solicitud AJAX para cargar los datos médicos del paciente
+    fetch(`../../controllers/Medicos/obtener_datos_medicos.php?id=${pacienteId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                // Verificar si todos los campos están completos
+                const camposCompletos = Object.values(data).every(
+                    (valor) => valor !== null && valor !== ''
+                );
 
-                    // Mostrar el contenedor de datos médicos
+                if (camposCompletos) {
+                    // Mostrar los datos médicos existentes
+                    document.getElementById('sexoExistente').innerText = data.sexo;
+                    document.getElementById('pesoExistente').innerText = data.peso;
+                    document.getElementById('alturaExistente').innerText = data.altura;
+                    document.getElementById('tipoSangreExistente').innerText = data.tipo_sangre;
+                    document.getElementById('fechaNacimientoExistente').innerText = data.fecha_nacimiento;
+                    document.getElementById('edadExistente').innerText = data.edad;
+                    document.getElementById('alergiasExistente').innerText = data.alergias;
+                    document.getElementById('medicamentosRegularesExistente').innerText = data.medicamentos_regulares;
+                    document.getElementById('padecimientosExistente').innerText = data.padecimientos;
+                    document.getElementById('fechaDatosExistente').innerText = data.fecha_datos;
+
+                    // Mostrar el formulario de modificación y el botón de "Ver Consultas Anteriores"
                     document.getElementById('datosMedicosContainer').style.display = 'block';
+                    document.getElementById('modificarContainer').style.display = 'block';
+                    document.getElementById('datosMedicosForm').style.display = 'none';
+                    document.getElementById('submitBtn').innerText = 'Modificar Datos Médicos';
 
-                    // Mostrar modificar si hay datos existentes
-                    if (data.sexo || data.peso || data.altura || data.tipo_sangre || data.fecha_nacimiento || data.edad || data.alergias || data.medicamentos_regulares || data.padecimientos || data.fecha_datos) {
-                        // Llenar los campos del formulario para modificar
-                        document.getElementById('sexo').value = data.sexo || '';
-                        document.getElementById('peso').value = data.peso || '';
-                        document.getElementById('altura').value = data.altura || '';
-                        document.getElementById('tipo_sangre').value = data.tipo_sangre || '';
-                        document.getElementById('fecha_nacimiento').value = data.fecha_nacimiento || '';
-                        document.getElementById('edad').value = data.edad || '';
-                        document.getElementById('alergias').value = data.alergias || '';
-                        document.getElementById('medicamentos_regulares').value = data.medicamentos_regulares || '';
-                        document.getElementById('padecimientos').value = data.padecimientos || '';
-                        document.getElementById('fecha_datos').value = data.fecha_datos || '';
-                        
-
-                        // Mostrar contenedor de modificación y ocultar el formulario de registro
-                        document.getElementById('modificarContainer').style.display = 'block';
-                        document.getElementById('datosMedicosForm').style.display = 'none';
-
-                        // Cambiar el texto del botón a "Modificar Datos Médicos"
-                        document.getElementById('submitBtn').innerText = 'Modificar Datos Médicos';
-                    } else {
-                        // Si no hay datos, mostrar el formulario para registrar
-                        document.getElementById('modificarContainer').style.display = 'none';
-                        document.getElementById('datosMedicosForm').style.display = 'block';
-
-                        // Cambiar el texto del botón a "Registrar Datos Médicos"
-                        document.getElementById('submitBtn').innerText = 'Registrar Datos Médicos';
+                    // Crear y mostrar el botón de "Ver Consultas Anteriores"
+                    if (!document.getElementById('verConsultasBtn')) {
+                        const verConsultasBtn = document.createElement('button');
+                        verConsultasBtn.className = 'btn btn-info';
+                        verConsultasBtn.id = 'verConsultasBtn';
+                        verConsultasBtn.innerText = 'Ver Consultas Anteriores';
+                        verConsultasBtn.onclick = () => {
+                            // Redirigir a la vista de consultas del paciente
+                            window.location.href = `../../pages/Medicos/Ver_consultas.view.php?id=${pacienteId}`;
+                        };
+                        document.getElementById('modificarContainer').appendChild(verConsultasBtn);
                     }
                 } else {
-                    alert('No se encontraron datos médicos para este paciente.');
+                    // Si faltan datos, mostrar el formulario para registrar
+                    document.getElementById('modificarContainer').style.display = 'none';
+                    document.getElementById('datosMedicosForm').style.display = 'block';
+                    document.getElementById('datosMedicosContainer').style.display = 'block';
+                    document.getElementById('submitBtn').innerText = 'Registrar Datos Médicos';
+
+                    // Ocultar el botón de "Ver Consultas Anteriores" si existe
+                    const verConsultasBtn = document.getElementById('verConsultasBtn');
+                    if (verConsultasBtn) verConsultasBtn.remove();
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert("Error al cargar los datos médicos.");
-            });
+            } else {
+                alert('No se encontraron datos médicos para este paciente.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Error al cargar los datos médicos.");
+        });
+}
+
+
+
+    function registrarConsulta() {
+        const pacienteId = document.getElementById('pacienteId').value;
+        window.location.href = `Nueva_consulta.view.php?id=${pacienteId}`;
     }
 
-    function activarModificar() {
-        // Hacer visibles los campos del formulario para modificar datos
-        document.getElementById('modificarContainer').style.display = 'none';
-        document.getElementById('datosMedicosForm').style.display = 'block';
+    function verConsultas() {
+        const pacienteId = document.getElementById('pacienteId').value;
+        window.location.href = `Ver_consultas.view.php?id=${pacienteId}`;
     }
 
+    function buscarPorCedula(event) {
+        event.preventDefault();
+        const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
+        const pacientesList = document.querySelectorAll('.paciente-item');
+
+        pacientesList.forEach(item => {
+            const cedula = item.dataset.cedula.toLowerCase();
+            item.style.display = cedula.includes(searchInput) ? 'block' : 'none';
+        });
+    }
+
+    function mostrarTodos() {
+        document.querySelectorAll('.paciente-item').forEach(item => item.style.display = 'block');
+        document.getElementById('searchInput').value = '';
+    }
     function calcularEdad() {
         const fechaNacimiento = document.getElementById('fecha_nacimiento').value;
         const edadInput = document.getElementById('edad');
@@ -245,32 +283,6 @@ $pacientes = $pacientesModel->busquedaPacientesSeleccionados();
             edadInput.value = '';
         }
     }
-// Función para buscar por cédula
-function buscarPorCedula(event) {
-        event.preventDefault();
-        const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
-        const pacientesList = document.querySelectorAll('.paciente-item');
-
-        pacientesList.forEach(item => {
-            const cedula = item.dataset.cedula.toLowerCase();
-            if (cedula.includes(searchInput)) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    }
-
-    // Función para mostrar todos los pacientes
-    function mostrarTodos() {
-        const pacientesList = document.querySelectorAll('.paciente-item');
-        pacientesList.forEach(item => {
-            item.style.display = 'block';
-        });
-        document.getElementById('searchInput').value = '';
-    }
-
-    // Resto de las funciones existentes
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

@@ -29,34 +29,30 @@
                     <ul class="dropdown-menu">
                         <li>
                             <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/registrar.view.php">Registrar</a>
-                            <span class="dropdown-item text-muted">Registrar</span>
+                           
                         </li>
                         <li>
                             <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/gestion_usuarios.view.php">Gestión de Usuarios</a>
-                            <span class="dropdown-item text-muted">Gestión de Usuarios</span>
+                            
                         </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li>
                             <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/roles.view.php">Roles</a>
-                            <span class="dropdown-item text-muted">Roles</span>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/permisos.view.php">Permisos</a>
-                            <span class="dropdown-item text-muted">Permisos</span>
+                            
                         </li>
                         <li>
                             <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/servicios.view.php">Servicios</a>
-                            <span class="dropdown-item text-muted">Servicios</span>
+                            
                         </li>
                         <li>
                             <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/especialidades.view.php">Especialidades</a>
-                            <span class="dropdown-item text-muted">Especialidades</span>
+                        
                         </li>
                         <li>
                             <a class="dropdown-item" href="<?php echo $prefix; ?>Administrador/medicina.view.php">Medicina</a>
-                            <span class="dropdown-item text-muted">Medicina</span>
+                            
                         </li>
                     </ul>
                 </li>
@@ -67,8 +63,11 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="<?php echo $prefix; ?>Medicos/Gestionar_datos_medicos.view.php">Gestionar Datos Medicos</a></li>
-                        <!--<li><a class="dropdown-item" href="<?php echo $prefix; ?>Medicos/Gestionar_Historial.view.php">Gestionar Historial Medico</a></li>-->
                         <li><a class="dropdown-item" href="<?php echo $prefix; ?>Medicos/ConsultarCitas.view.php">Consultar Citas</a></li>
+                        <hr class="dropdown-divider">
+                        <li><a class="dropdown-item" href="<?php echo $prefix; ?>Medicos/Gestionar_consultas.view.php">Consultas</a></li>
+                        <li><a class="dropdown-item" href="<?php echo $prefix; ?>Medicos/Gestionar_recetas.view.php">Recetas</a></li>
+
                     </ul>
                 </li>
     
@@ -100,11 +99,6 @@
                     <li><a class="dropdown-item" href="<?php echo $prefix; ?>Inventario/listarUtensilio.view.php">Listar Utensilios</a></li>
                     <li><a class="dropdown-item" href="<?php echo $prefix; ?>Inventario/registrarUtensilios.view.php">Registrar Utensilios</a></li>
                     </ul>
-                </li>
-
-                <!-- Sección disabled, por ejemplo -->
-                <li class="nav-item">
-                    <span class="nav-link text-muted">Disabled</span>
                 </li>
             </ul>
 

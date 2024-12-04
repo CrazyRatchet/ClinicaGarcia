@@ -15,18 +15,44 @@ $paciente = $pacientesModel->obtenerPacientePorId($pacienteId);
 if (!$paciente) {
     $_SESSION['message'] = "Paciente no encontrado.";
     $_SESSION['message_type'] = "error";
-    header("Location: GestionarHistorialMedico.view.php");
+    header("Location: Gestionar_consultas.view.php");
     exit();
 }
 ?>
 
 <?php require '../partials/head.php'; ?>
 <?php require '../partials/nav.php'; ?>
+<style>
+    /* Asegura que el body ocupe toda la altura */
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
 
+    .container {
+      flex: 1;
+    }
+
+    /* Estilo de la tarjeta */
+    .card {
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Footer al final de la página */
+    footer {
+      margin-top: auto;
+      padding: 20px 0;
+      background-color: #f8f9fa;
+      text-align: center;
+    }
+  </style>
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Registrar Historial Médico para <?php echo $paciente['nombre']; ?></h2>
+    <h2 class="text-center mb-4">Registrar Consulta para <?php echo $paciente['nombre']; ?></h2>
 
-    <form action="registrar_historial.php" method="POST">
+    <form action="../../controllers/Medicos/registrar_consulta.php" method="POST">
         <input type="hidden" name="paciente_id" value="<?php echo $pacienteId; ?>">
         
         <div class="form-group">
@@ -41,17 +67,17 @@ if (!$paciente) {
 
         <div class="form-group">
             <label for="numero_identificacion">Número de Identificación:</label>
-            <input type="text" class="form-control" id="numero_identificacion" name="numero_identificacion" value="<?php echo $paciente['numero_identificacion']; ?>" required >
+            <input type="text" class="form-control" id="numero_identificacion" name="numero_identificacion" value="<?php echo $paciente['cedula']; ?>" required >
         </div>
 
         <div class="form-group">
             <label for="direccion">Dirección:</label>
-            <input type="text" class="form-control" id="direccion" name="direccion" value="<?php echo $paciente['direccion']; ?>" required >
+            <input type="text" class="form-control" id="direccion" name="direccion" required >
         </div>
 
         <div class="form-group">
             <label for="numero_telefono">Número de Teléfono:</label>
-            <input type="text" class="form-control" id="numero_telefono" name="numero_telefono" value="<?php echo $paciente['telefono']; ?>" required >
+            <input type="text" class="form-control" id="numero_telefono" name="numero_telefono" required >
         </div>
 
         <div class="form-group">
@@ -60,8 +86,13 @@ if (!$paciente) {
         </div>
 
         <div class="form-group">
-            <label for="medicamentos_actuales">Medicamentos Actuales:</label>
-            <input type="text" class="form-control" id="medicamentos_actuales" name="medicamentos_actuales" required>
+            <label for="medicamentos_actuales">Medicamentos Regulares:</label>
+            <input type="text" class="form-control" id="medicamentos_regulares" name="medicamentos_regulares" required>
+        </div>
+
+        <div class="form-group">
+            <label for="medicamentos_actuales">Padecimientos:</label>
+            <input type="text" class="form-control" id="padecimientos" name="padecimientos" required>
         </div>
 
         <div class="form-group">
@@ -70,13 +101,16 @@ if (!$paciente) {
         </div>
 
         <div class="form-group">
-            <label for="historia_sintomas">Historia de Síntomas:</label>
-            <textarea class="form-control" id="historia_sintomas" name="historia_sintomas" rows="3" required></textarea>
+            <label for="sintomas">Sintomas:</label>
+            <textarea class="form-control" id="sintomas" name="historia_sintomas" rows="3" required></textarea>
         </div>
-
         <div class="form-group">
-            <label for="fecha">Fecha de Registro:</label>
-            <input type="date" class="form-control" id="fecha" name="fecha" required>
+            <label for="sintomas">Diagnostico:</label>
+            <textarea class="form-control" id="diagnostico" name="diagnostico" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="fecha">Fecha de Consulta:</label>
+            <input type="date" class="form-control" id="fecha_consulta" name="fecha_consulta" required>
         </div>
 
         <div class="text-center">

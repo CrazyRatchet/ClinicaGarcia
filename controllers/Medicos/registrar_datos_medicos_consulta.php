@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST['edad']) || empty($_POST['peso']) || empty($_POST['altura']) || empty($_POST['fecha_nacimiento'])) {
         $_SESSION['message'] = "Por favor, complete todos los campos obligatorios.";
         $_SESSION['message_type'] = "error";
-        header("Location: /ClinicaGarcia/pages/Medicos/Gestionar_datos_medicos.view.php?id=$pacienteId");
+        header("Location: /ClinicaGarcia/pages/Medicos/Gestionar_consultas.view.php?id=$pacienteId");
         exit();
     }
 
@@ -38,17 +38,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($pacientesModel->completarDatosPaciente($pacienteId)) {
         $_SESSION['message'] = "Datos médicos actualizados exitosamente.";
         $_SESSION['message_type'] = "success";
-        header("Location: /ClinicaGarcia/pages/Medicos/Gestionar_datos_medicos.view.php");
+        header("Location: /ClinicaGarcia/pages/Medicos/Gestionar_consultas.view.php");
         exit();
     } else {
         $_SESSION['message'] = "Error al actualizar los datos médicos. Intente nuevamente.";
         $_SESSION['message_type'] = "error";
-        header("Location: /ClinicaGarcia/pages/Medicos/Gestionar_datos_medicos.view.php?id=$pacienteId");
+        header("Location: /ClinicaGarcia/pages/Medicos/Gestionar_consultas.view.php?id=$pacienteId");
         exit();
     }
 } else {
     // Redirigir si el acceso no es por POST
-    header("Location: /ClinicaGarcia/pages/Medicos/Gestionar_datos_medicos.view.php");
+    header("Location: /ClinicaGarcia/pages/Medicos/Gestionar_consultas.view.php");
     exit();
 }
 ?>
